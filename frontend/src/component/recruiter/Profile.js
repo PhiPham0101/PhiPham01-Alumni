@@ -35,7 +35,6 @@ const Profile = (props) => {
 
   const [profileDetails, setProfileDetails] = useState({
     name: "",
-    address: "",
     code: "",
     course: "",
     bio: "",
@@ -147,17 +146,6 @@ const Profile = (props) => {
                   label="Họ và tên"
                   value={profileDetails.name}
                   onChange={(event) => handleInput("name", event.target.value)}
-                  className={classes.inputBox}
-                  variant="outlined"
-                  fullWidth
-                  style={{ width: "100%" }}
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  label="Địa chỉ"
-                  value={profileDetails.address}
-                  onChange={(event) => handleInput("address", event.target.value)}
                   className={classes.inputBox}
                   variant="outlined"
                   fullWidth

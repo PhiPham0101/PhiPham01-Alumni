@@ -33,8 +33,12 @@ const Navbar = (props) => {
   return (
     <AppBar position="fixed">
       <Toolbar>
-        <Typography variant="h3" className={classes.title} style={{ color: "orange" }}>
-        AlumniIT
+        <Typography className={classes.title}>
+          <Button onClick={() => handleClick("/")}>
+          <Typography variant="h4" style={{ color: "orange" }}>
+            AlumniIT    
+          </Typography>
+          </Button>
         </Typography>
         {isAuth() ? (
           userType() === "recruiter" ? (
@@ -46,12 +50,12 @@ const Navbar = (props) => {
                 Đăng tuyển dụng
               </Button>
               <Button color="inherit" onClick={() => handleClick("/myjobs")}>
-                Quản lý bài đăng
+                Bài đăng
               </Button>
               <Button color="inherit" onClick={() => handleClick("/employees")}>
-                Nhân Viên
+                Ứng viên
               </Button>
-              <Button color="inherit" onClick={() => handleClick("/employees")}>
+              <Button color="inherit" onClick={() => handleClick("/myblogs")}>
                 Diễn đàn
               </Button>
               <Button color="inherit" onClick={() => handleClick("/profile")}>
@@ -70,9 +74,9 @@ const Navbar = (props) => {
                 color="inherit"
                 onClick={() => handleClick("/applications")}
               >
-                Đăng ký ứng tuyển
+                Ứng tuyển
               </Button>
-              <Button color="inherit" onClick={() => handleClick("/employees")}>
+              <Button color="inherit" onClick={() => handleClick("/blogs")}>
                 Diễn đàn
               </Button>
               <Button color="inherit" onClick={() => handleClick("/profile")}>

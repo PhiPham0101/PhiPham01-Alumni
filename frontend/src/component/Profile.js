@@ -111,10 +111,8 @@ const Profile = (props) => {
 
   const [profileDetails, setProfileDetails] = useState({
     name: "",
-    address: "",
     education: [],
     skills: [],
-    resume: "",
     profile: "",
   });
 
@@ -277,17 +275,7 @@ const Profile = (props) => {
                   fullWidth
                 />
               </Grid>
-              <Grid item>
-                <TextField
-                  label="Địa chỉ"
-                  value={profileDetails.address}
-                  onChange={(event) => handleInput("address", event.target.value)}
-                  className={classes.inputBox}
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item>
+              {/* <Grid item>
                 <FileUploadInput
                   className={classes.inputBox}
                   label="Resume (.pdf)"
@@ -296,7 +284,7 @@ const Profile = (props) => {
                   handleInput={handleInput}
                   identifier={"resume"}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item>
                 <FileUploadInput
                   className={classes.inputBox}

@@ -22,6 +22,36 @@ let schema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    maxApplicants: {
+      type: Number,
+      validate: [
+        {
+          validator: Number.isInteger,
+          msg: "maxApplicants should be an integer",
+        },
+        {
+          validator: function (value) {
+            return value > 0;
+          },
+          msg: "maxApplicants should greater than 0",
+        },
+      ],
+    },
+    maxPositions: {
+      type: Number,
+      validate: [
+        {
+          validator: Number.isInteger,
+          msg: "maxPostions should be an integer",
+        },
+        {
+          validator: function (value) {
+            return value > 0;
+          },
+          msg: "maxPositions should greater than 0",
+        },
+      ],
+    },
     activeApplications: {
       type: Number,
       default: 0,
@@ -74,16 +104,6 @@ let schema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // duration: {
-    //   type: Number,
-    //   min: 0,
-    //   validate: [
-    //     {
-    //       validator: Number.isInteger,
-    //       msg: "Duration should be an integer",
-    //     },
-    //   ],
-    // },
     salary: {
       type: Number,
       validate: [
@@ -99,17 +119,17 @@ let schema = new mongoose.Schema(
         },
       ],
     },
-    rating: {
-      type: Number,
-      max: 5.0,
-      default: -1.0,
-      validate: {
-        validator: function (v) {
-          return v >= -1.0 && v <= 5.0;
-        },
-        msg: "Xếp hạng không thành công",
-      },
-    },
+    // rating: {
+    //   type: Number,
+    //   max: 5.0,
+    //   default: -1.0,
+    //   validate: {
+    //     validator: function (v) {
+    //       return v >= -1.0 && v <= 5.0;
+    //     },
+    //     msg: "Xếp hạng không thành công",
+    //   },
+    // },
     info: {
       type: String,
       required: true,

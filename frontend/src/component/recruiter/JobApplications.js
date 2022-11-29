@@ -122,7 +122,7 @@ const FilterPopup = (props) => {
                   label="Đã đăng ký"
                 />
               </Grid>
-              <Grid item>
+              {/* <Grid item>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -141,7 +141,7 @@ const FilterPopup = (props) => {
                   }
                   label="Danh sách rút gọn"
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
           </Grid>
           <Grid container item alignItems="center">
@@ -261,7 +261,7 @@ const FilterPopup = (props) => {
                   </IconButton>
                 </Grid>
               </Grid>
-              <Grid
+              {/* <Grid
                 item
                 container
                 xs={4}
@@ -317,7 +317,7 @@ const FilterPopup = (props) => {
                     )}
                   </IconButton>
                 </Grid>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Grid>
 
@@ -351,7 +351,7 @@ const ApplicationTile = (props) => {
 
   const colorSet = {
     applied: "#3454D1",
-    shortlisted: "#DC851F",
+   // shortlisted: "#DC851F",
     accepted: "#09BC8A",
     rejected: "#D1345B",
     deleted: "#B49A67",
@@ -359,38 +359,38 @@ const ApplicationTile = (props) => {
     finished: "#4EA5D9",
   };
 
-  const getResume = () => {
-    if (
-      application.jobApplicant.resume &&
-      application.jobApplicant.resume !== ""
-    ) {
-      const address = `${server}${application.jobApplicant.resume}`;
-      console.log(address);
-      axios(address, {
-        method: "GET",
-        responseType: "blob",
-      })
-        .then((response) => {
-          const file = new Blob([response.data], { type: "application/pdf" });
-          const fileURL = URL.createObjectURL(file);
-          window.open(fileURL);
-        })
-        .catch((error) => {
-          console.log(error);
-          setPopup({
-            open: true,
-            severity: "error",
-            message: "Error",
-          });
-        });
-    } else {
-      setPopup({
-        open: true,
-        severity: "error",
-        message: "Không tìm thấy hồ sơ!",
-      });
-    }
-  };
+  // const getResume = () => {
+  //   if (
+  //     application.jobApplicant.resume &&
+  //     application.jobApplicant.resume !== ""
+  //   ) {
+  //     const address = `${server}${application.jobApplicant.resume}`;
+  //     console.log(address);
+  //     axios(address, {
+  //       method: "GET",
+  //       responseType: "blob",
+  //     })
+  //       .then((response) => {
+  //         const file = new Blob([response.data], { type: "application/pdf" });
+  //         const fileURL = URL.createObjectURL(file);
+  //         window.open(fileURL);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //         setPopup({
+  //           open: true,
+  //           severity: "error",
+  //           message: "Error",
+  //         });
+  //       });
+  //   } else {
+  //     setPopup({
+  //       open: true,
+  //       severity: "error",
+  //       message: "Không tìm thấy hồ sơ!",
+  //     });
+  //   }
+  // };
 
   const updateStatus = (status) => {
     const address = `${apiList.applications}/${application._id}`;
@@ -429,40 +429,12 @@ const ApplicationTile = (props) => {
           <Button
             className={classes.statusBlock}
             style={{
-              background: colorSet["shortlisted"],
-              color: "#ffffff",
-            }}
-            onClick={() => updateStatus("shortlisted")}
-          >
-            Danh sách thu gọn
-          </Button>
-        </Grid>
-        <Grid item xs>
-          <Button
-            className={classes.statusBlock}
-            style={{
-              background: colorSet["rejected"],
-              color: "#ffffff",
-            }}
-            onClick={() => updateStatus("rejected")}
-          >
-            Từ chối
-          </Button>
-        </Grid>
-      </>
-    ),
-    shortlisted: (
-      <>
-        <Grid item xs>
-          <Button
-            className={classes.statusBlock}
-            style={{
               background: colorSet["accepted"],
               color: "#ffffff",
             }}
             onClick={() => updateStatus("accepted")}
           >
-            Chấp nhận
+            Thêm ứng viên
           </Button>
         </Grid>
         <Grid item xs>
@@ -479,6 +451,34 @@ const ApplicationTile = (props) => {
         </Grid>
       </>
     ),
+    // shortlisted: (
+    //   <>
+    //     <Grid item xs>
+    //       <Button
+    //         className={classes.statusBlock}
+    //         style={{
+    //           background: colorSet["accepted"],
+    //           color: "#ffffff",
+    //         }}
+    //         onClick={() => updateStatus("accepted")}
+    //       >
+    //         Chấp nhận
+    //       </Button>
+    //     </Grid>
+    //     <Grid item xs>
+    //       <Button
+    //         className={classes.statusBlock}
+    //         style={{
+    //           background: colorSet["rejected"],
+    //           color: "#ffffff",
+    //         }}
+    //         onClick={() => updateStatus("rejected")}
+    //       >
+    //         Từ chối
+    //       </Button>
+    //     </Grid>
+    //   </>
+    // ),
     rejected: (
       <>
         <Grid item xs>
@@ -504,7 +504,7 @@ const ApplicationTile = (props) => {
               color: "#ffffff",
             }}
           >
-            Đã chấp nhận
+            Đã thêm ứng viên vào danh sách
           </Paper>
         </Grid>
       </>
@@ -519,7 +519,7 @@ const ApplicationTile = (props) => {
               color: "#ffffff",
             }}
           >
-            Đã hủy
+            Đã từ chối
           </Paper>
         </Grid>
       </>
@@ -534,7 +534,7 @@ const ApplicationTile = (props) => {
               color: "#ffffff",
             }}
           >
-            Hoành thành
+            Đã được xóa ứng viên
           </Paper>
         </Grid>
       </>
@@ -586,7 +586,7 @@ const ApplicationTile = (props) => {
               .join(", ")}
           </Grid>
           <Grid item>
-            SOP: {application.sop !== "" ? application.sop : "Không được nộp"}
+            Mục đích ứng tuyển: {application.sop !== "" ? application.sop : "Không được nộp"}
           </Grid>
           <Grid item>
             {application.jobApplicant.skills.map((skill) => (
@@ -596,14 +596,14 @@ const ApplicationTile = (props) => {
         </Grid>
         <Grid item container direction="column" xs={3}>
           <Grid item>
-            <Button
+            {/* <Button
               variant="contained"
               className={classes.statusBlock}
               color="primary"
               onClick={() => getResume()}
             >
               Tải xuống Resume
-            </Button>
+            </Button> */}
           </Grid>
           <Grid item container xs>
             {buttonSet[application.status]}
@@ -645,7 +645,7 @@ const JobApplications = (props) => {
     status: {
       all: false,
       applied: false,
-      shortlisted: false,
+      //shortlisted: false,
     },
     sort: {
       "jobApplicant.name": {
@@ -676,9 +676,9 @@ const JobApplications = (props) => {
     if (searchOptions.status.applied) {
       searchParams = [...searchParams, `status=applied`];
     }
-    if (searchOptions.status.shortlisted) {
-      searchParams = [...searchParams, `status=shortlisted`];
-    }
+    // if (searchOptions.status.shortlisted) {
+    //   searchParams = [...searchParams, `status=shortlisted`];
+    // }
 
     let asc = [],
       desc = [];

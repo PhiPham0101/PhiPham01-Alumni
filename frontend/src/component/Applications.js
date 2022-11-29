@@ -81,39 +81,39 @@ const ApplicationTile = (props) => {
       });
   };
 
-  const changeRating = () => {
-    axios
-      .put(
-        apiList.rating,
-        { rating: rating, jobId: application.job._id },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-        setPopup({
-          open: true,
-          severity: "success",
-          message: "Cập nhật xếp hạng thành công.",
-        });
-        fetchRating();
-        setOpen(false);
-      })
-      .catch((err) => {
-        // console.log(err.response);
-        console.log(err);
-        setPopup({
-          open: true,
-          severity: "error",
-          message: err.response.data.message,
-        });
-        fetchRating();
-        setOpen(false);
-      });
-  };
+  // const changeRating = () => {
+  //   axios
+  //     .put(
+  //       apiList.rating,
+  //       { rating: rating, jobId: application.job._id },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       setPopup({
+  //         open: true,
+  //         severity: "success",
+  //         message: "Cập nhật xếp hạng thành công.",
+  //       });
+  //       fetchRating();
+  //       setOpen(false);
+  //     })
+  //     .catch((err) => {
+  //       // console.log(err.response);
+  //       console.log(err);
+  //       setPopup({
+  //         open: true,
+  //         severity: "error",
+  //         message: err.response.data.message,
+  //       });
+  //       fetchRating();
+  //       setOpen(false);
+  //     });
+  // };
 
   const handleClose = () => {
     setOpen(false);
@@ -121,7 +121,6 @@ const ApplicationTile = (props) => {
 
   const colorSet = {
     applied: "#3454D1",
-    shortlisted: "#DC851F",
     accepted: "#09BC8A",
     rejected: "#D1345B",
     deleted: "#B49A67",
@@ -136,6 +135,8 @@ const ApplicationTile = (props) => {
           <Grid item>
             <Typography variant="h5">{application.job.title}</Typography>
           </Grid>
+          <Grid item>Tên công ty: {application.job.companyname}</Grid>
+          <Grid item>Link website tuyển dụng: {application.job.linkwebsite}</Grid>
           <Grid item>Người đăng: {application.recruiter.name}</Grid>
           <Grid item>Loại công việc: {application.job.jobType}</Grid>
           <Grid item>Lương: &#8377; {application.job.salary} USD</Grid>
@@ -171,7 +172,7 @@ const ApplicationTile = (props) => {
           {application.status === "accepted" ||
           application.status === "finished" ? (
             <Grid item>
-              <Button
+              {/* <Button
                 variant="contained"
                 color="primary"
                 className={classes.statusBlock}
@@ -181,12 +182,12 @@ const ApplicationTile = (props) => {
                 }}
               >
                 Xếp hạng công việc
-              </Button>
+              </Button> */}
             </Grid>
           ) : null}
         </Grid>
       </Grid>
-      <Modal open={open} onClose={handleClose} className={classes.popupDialog}>
+      {/* <Modal open={open} onClose={handleClose} className={classes.popupDialog}>
         <Paper
           style={{
             padding: "20px",
@@ -215,7 +216,7 @@ const ApplicationTile = (props) => {
             Submit
           </Button>
         </Paper>
-      </Modal>
+      </Modal> */}
     </Paper>
   );
 };

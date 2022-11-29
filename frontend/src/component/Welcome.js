@@ -42,7 +42,7 @@ const Welcome = (props) => {
             flexDirection: "column",
             color: "#33CCFF"}} 
           variant="h1">
-          Chào mừng đến Alumni IT Job
+          Chào mừng đến Alumni IT
         </Typography>
         
       </Grid>

@@ -18,7 +18,7 @@ let schema = new mongoose.Schema(
       type: String,
       enum: [
         "applied", // when a applicant is applied
-        "shortlisted", // when a applicant is shortlisted
+       // "shortlisted", // when a applicant is shortlisted
         "accepted", // when a applicant is accepted
         "rejected", // when a applicant is rejected
         "deleted", // when any job is deleted
@@ -49,7 +49,7 @@ let schema = new mongoose.Schema(
         validator: function (v) {
           return v.split(" ").filter((ele) => ele != "").length <= 250;
         },
-        msg: "Bày tỏ mục đích không được lớn hơn 250 từ",
+        msg: "Mục đích ứng tuyển không được lớn hơn 250 từ",
       },
     },
   },

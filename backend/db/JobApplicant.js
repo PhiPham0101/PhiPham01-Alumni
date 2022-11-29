@@ -15,13 +15,11 @@ let schema = new mongoose.Schema(
       {
         institutionName: {
           type: String,
-          required: true,
         },
         startYear: {
           type: Number,
           min: 1930,
           max: new Date().getFullYear(),
-          required: true,
           validate: Number.isInteger,
         },
         endYear: {
@@ -33,27 +31,14 @@ let schema = new mongoose.Schema(
               validator: function (value) {
                 return this.startYear <= value;
               },
-              msg: "Năm kết thúc phải lớn hơn hoặc bằng Năm bắt đầur",
+              msg: "Năm kết thúc phải lớn hơn hoặc bằng Năm bắt đầu",
             },
           ],
         },
       },
     ],
     skills: [String],
-    rating: {
-      type: Number,
-      max: 5.0,
-      default: -1.0,
-      validate: {
-        validator: function (v) {
-          return v >= -1.0 && v <= 5.0;
-        },
-        msg: "Xếp hạng không hợp lệ",
-      },
-    },
-    resume: {
-      type: String,
-    },
+
     profile: {
       type: String,
     },

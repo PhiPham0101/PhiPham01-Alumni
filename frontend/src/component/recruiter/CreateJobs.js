@@ -44,6 +44,8 @@ const CreateJobs = (props) => {
     skillsets: [],
     jobType: "Full Time",
     salary: 0,
+    maxApplicants: 1000,
+    maxPositions: 0,
     info: "",
   });
 
@@ -75,7 +77,6 @@ const CreateJobs = (props) => {
     },
     postname: {
       untouched: true,
-      required: true,
       error: false,
       message: "",
     },
@@ -105,7 +106,6 @@ const CreateJobs = (props) => {
     },
     info: {
       untouched: true,
-      required: true,
       error: false,
       message: "",
     },
@@ -148,6 +148,8 @@ const CreateJobs = (props) => {
           skillsets: [],
           jobType: "Full Time",
           salary: 0,
+          maxApplicants: 1000,
+          maxPositions: 0,
           info: "",
         });
       })
@@ -311,26 +313,6 @@ const CreateJobs = (props) => {
                     <MenuItem value="Freelance">Freelance</MenuItem>
                   </TextField>
                 </Grid>
-                {/* <Grid item>
-                  <TextField
-                    select
-                    label="Duration"
-                    variant="outlined"
-                    value={jobDetails.duration}
-                    onChange={(event) => {
-                      handleInput("duration", event.target.value);
-                    }}
-                    fullWidth
-                  >
-                    <MenuItem value={0}>Flexible</MenuItem>
-                    <MenuItem value={1}>1 Month</MenuItem>
-                    <MenuItem value={2}>2 Months</MenuItem>
-                    <MenuItem value={3}>3 Months</MenuItem>
-                    <MenuItem value={4}>4 Months</MenuItem>
-                    <MenuItem value={5}>5 Months</MenuItem>
-                    <MenuItem value={6}>6 Months</MenuItem>
-                  </TextField>
-                </Grid> */}
                 <Grid item>
                   <TextField
                     label="Lương"
@@ -361,7 +343,7 @@ const CreateJobs = (props) => {
                 </Grid>
                 {/* <Grid item>
                   <TextField
-                    label="Maximum Number Of Applicants"
+                    label="Số lượng tối đa vị trí ứng tuyển"
                     type="number"
                     variant="outlined"
                     value={jobDetails.maxApplicants}
@@ -371,10 +353,10 @@ const CreateJobs = (props) => {
                     InputProps={{ inputProps: { min: 1 } }}
                     fullWidth
                   />
-                </Grid>
+                </Grid> */}
                 <Grid item>
                   <TextField
-                    label="Positions Available"
+                    label="Số lượng cần tuyển"
                     type="number"
                     variant="outlined"
                     value={jobDetails.maxPositions}
@@ -384,7 +366,7 @@ const CreateJobs = (props) => {
                     InputProps={{ inputProps: { min: 1 } }}
                     fullWidth
                   />
-                </Grid> */}
+                </Grid>
                 <Grid item>
                   <TextField
                     label="Thông tin liên hệ"

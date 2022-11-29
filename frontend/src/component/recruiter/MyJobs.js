@@ -154,21 +154,13 @@ const JobTile = (props) => {
           <Grid item>
             <Typography variant="h5">{job.title}</Typography>
           </Grid>
-          <Grid item>
-            <Rating value={job.rating !== -1 ? job.rating : null} readOnly />
-          </Grid>
           <Grid item>Loại công việc: {job.jobType}</Grid>
           <Grid item>Lương: {job.salary} USD</Grid>
           <Grid item>Ngày đăng bài: {postedOn.toLocaleDateString()}</Grid>
-          {/* <Grid item>
-            Duration :{" "}
-            {job.duration !== 0 ? `${job.duration} month` : `Flexible`}
-          </Grid> */}
-          {/* <Grid item>Number of Applicants: {job.maxApplicants}</Grid>
           <Grid item>
-            Remaining Number of Positions:{" "}
+            Các vị trí còn lại:{" "}
             {job.maxPositions - job.acceptedCandidates}
-          </Grid> */}
+          </Grid>
           <Grid item>
             {job.skillsets.map((skill) => (
               <Chip label={skill} style={{ marginRight: "2px" }} />
@@ -291,6 +283,32 @@ const JobTile = (props) => {
                   shrink: true,
                 }}
                 variant="outlined"
+                fullWidth
+              />
+            </Grid>
+            {/* <Grid item>
+              <TextField
+                label="Số lượng tối đa đơn đăng ký"
+                type="number"
+                variant="outlined"
+                value={jobDetails.maxApplicants}
+                onChange={(event) => {
+                  handleInput("maxApplicants", event.target.value);
+                }}
+                InputProps={{ inputProps: { min: 1 } }}
+                fullWidth
+              />
+            </Grid> */}
+            <Grid item>
+              <TextField
+                label="Vị trí có sẵn"
+                type="number"
+                variant="outlined"
+                value={jobDetails.maxPositions}
+                onChange={(event) => {
+                  handleInput("maxPositions", event.target.value);
+                }}
+                InputProps={{ inputProps: { min: 1 } }}
                 fullWidth
               />
             </Grid>
@@ -437,11 +455,11 @@ const FilterPopup = (props) => {
               <Slider
                 valueLabelDisplay="auto"
                 valueLabelFormat={(value) => {
-                  return value * (10000 / 100);
+                  return value * (10000 / 10);
                 }}
                 marks={[
                   { value: 0, label: "0USD" },
-                  { value: 100, label: "10000USD" },
+                  { value: 100, label: "100000USD" },
                 ]}
                 value={searchOptions.salary}
                 onChange={(event, value) =>
@@ -514,7 +532,7 @@ const FilterPopup = (props) => {
                   </IconButton>
                 </Grid>
               </Grid>
-              <Grid
+              {/* <Grid
                 item
                 container
                 xs={5}
@@ -569,7 +587,7 @@ const FilterPopup = (props) => {
                     )}
                   </IconButton>
                 </Grid>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Grid>
 
@@ -601,17 +619,8 @@ const MyJobs = (props) => {
       freelance: false,
     },
     salary: [0, 100],
-    // duration: "0",
     sort: {
       salary: {
-        status: false,
-        desc: false,
-      },
-      duration: {
-        status: false,
-        desc: false,
-      },
-      rating: {
         status: false,
         desc: false,
       },
@@ -652,9 +661,6 @@ const MyJobs = (props) => {
         `salaryMax=${searchOptions.salary[1] * 1000}`,
       ];
     }
-    // if (searchOptions.duration != "0") {
-    //   searchParams = [...searchParams, `duration=${searchOptions.duration}`];
-    // }
 
     let asc = [],
       desc = [];

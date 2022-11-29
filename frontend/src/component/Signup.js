@@ -65,7 +65,7 @@ const MultifieldInput = (props) => {
           </Grid>
           <Grid item xs={3}>
             <TextField
-              label="Thời gian bắt đầu"
+              label="Bắt đầu"
               value={obj.startYear}
               variant="outlined"
               type="number"
@@ -78,7 +78,7 @@ const MultifieldInput = (props) => {
           </Grid>
           <Grid item xs={3}>
             <TextField
-              label="Thời gian kết thúc"
+              label="Kết thúc"
               value={obj.endYear}
               variant="outlined"
               type="number"
@@ -127,7 +127,6 @@ const Login = (props) => {
     name: "",
     education: [],
     skills: [],
-    resume: "",
     profile: "",
     bio: "",
     code: "",
@@ -166,13 +165,11 @@ const Login = (props) => {
     },
     code: {
       untouched: true,
-      required: true,
       error: false,
       message: "",
     },
     course: {
       untouched: true,
-      required: true,
       error: false,
       message: "",
     },
@@ -406,7 +403,7 @@ const Login = (props) => {
           />
         </Grid>
         {signupDetails.type === "applicant" ? (
-          <>
+          <>    
             <MultifieldInput
               education={education}
               setEducation={setEducation}
@@ -422,18 +419,11 @@ const Login = (props) => {
                 }
               />
             </Grid>
-            <Grid item>
+            {/* <Grid item>
               <FileUploadInput
                 className={classes.inputBox}
                 label="Resume (.pdf)"
                 icon={<DescriptionIcon />}
-                // value={files.resume}
-                // onChange={(event) =>
-                //   setFiles({
-                //     ...files,
-                //     resume: event.target.files[0],
-                //   })
-                // }
                 uploadTo={apiList.uploadResume}
                 handleInput={handleInput}
                 identifier={"resume"}
@@ -444,18 +434,11 @@ const Login = (props) => {
                 className={classes.inputBox}
                 label="Hình ảnh (.jpg/.png)"
                 icon={<FaceIcon />}
-                // value={files.profileImage}
-                // onChange={(event) =>
-                //   setFiles({
-                //     ...files,
-                //     profileImage: event.target.files[0],
-                //   })
-                // }
                 uploadTo={apiList.uploadProfileImage}
                 handleInput={handleInput}
                 identifier={"profile"}
               />
-            </Grid>
+            </Grid> */}
           </>
         ) : (
           <>

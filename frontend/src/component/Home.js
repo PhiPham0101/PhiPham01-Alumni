@@ -107,18 +107,11 @@ const JobTile = (props) => {
           <Grid item>
             <Typography variant="h5">{job.title}</Typography>
           </Grid>
-          <Grid item>
-            <Rating value={job.rating !== -1 ? job.rating : null} readOnly />
-          </Grid>
           <Grid item>Tên công ty: {job.companyname}</Grid>
           <Grid item>Link website tuyển dụng: {job.linkwebsite}</Grid>
           <Grid item>Nội dung: {job.postname}</Grid>
           <Grid item>Loại công việc: {job.jobType}</Grid>
           <Grid item>Lương: {job.salary} USD</Grid>
-          {/* <Grid item>
-            Duration :{" "}
-            {job.duration !== 0 ? `${job.duration} month` : `Flexible`}
-          </Grid> */}
           <Grid item>Người đăng: {job.recruiter.name}</Grid>
           <Grid item>Thời hạn đăng ký: {deadline}</Grid>
 
@@ -155,7 +148,7 @@ const JobTile = (props) => {
           }}
         >
           <TextField
-            label="Write SOP (upto 250 words)"
+            label="Mục đích ứng tuyển (không quá 250 từ)"
             multiline
             rows={8}
             style={{ width: "100%", marginBottom: "30px" }}
@@ -177,7 +170,7 @@ const JobTile = (props) => {
             style={{ padding: "10px 50px" }}
             onClick={() => handleApply()}
           >
-            Submit
+            Gửi
           </Button>
         </Paper>
       </Modal>
@@ -299,11 +292,11 @@ const FilterPopup = (props) => {
               <Slider
                 valueLabelDisplay="auto"
                 valueLabelFormat={(value) => {
-                  return value * (10000 / 100);
+                  return value * (10000 / 10);
                 }}
                 marks={[
                   { value: 0, label: "0USD" },
-                  { value: 100, label: "10000USD" },
+                  { value: 100, label: "100000USD" },
                 ]}
                 value={searchOptions.salary}
                 onChange={(event, value) =>
@@ -376,7 +369,7 @@ const FilterPopup = (props) => {
                   </IconButton>
                 </Grid>
               </Grid>
-              <Grid
+              {/* <Grid
                 item
                 container
                 xs={5}
@@ -431,7 +424,7 @@ const FilterPopup = (props) => {
                     )}
                   </IconButton>
                 </Grid>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Grid>
 
@@ -463,17 +456,8 @@ const Home = (props) => {
       freelance: false,
     },
     salary: [0, 100],
-    // duration: "0",
     sort: {
       salary: {
-        status: false,
-        desc: false,
-      },
-      duration: {
-        status: false,
-        desc: false,
-      },
-      rating: {
         status: false,
         desc: false,
       },
@@ -513,9 +497,6 @@ const Home = (props) => {
         ...searchParams,
         `salaryMax=${searchOptions.salary[1] * 1000}`,
       ];
-    }
-    if (searchOptions.duration != "0") {
-      searchParams = [...searchParams, `duration=${searchOptions.duration}`];
     }
 
     let asc = [],

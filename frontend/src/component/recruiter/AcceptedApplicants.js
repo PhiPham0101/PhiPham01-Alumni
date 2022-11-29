@@ -244,7 +244,7 @@ const FilterPopup = (props) => {
                   </IconButton>
                 </Grid>
               </Grid>
-              <Grid
+              {/* <Grid
                 item
                 container
                 xs={6}
@@ -300,7 +300,7 @@ const FilterPopup = (props) => {
                     )}
                   </IconButton>
                 </Grid>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Grid>
 
@@ -326,45 +326,45 @@ const ApplicationTile = (props) => {
   const setPopup = useContext(SetPopupContext);
   const [open, setOpen] = useState(false);
   const [openEndJob, setOpenEndJob] = useState(false);
-  const [rating, setRating] = useState(application.jobApplicant.rating);
+  // const [rating, setRating] = useState(application.jobApplicant.rating);
 
   const appliedOn = new Date(application.dateOfApplication);
 
-  const changeRating = () => {
-    axios
-      .put(
-        apiList.rating,
-        { rating: rating, applicantId: application.jobApplicant.userId },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-        setPopup({
-          open: true,
-          severity: "success",
-          message: "Rating updated successfully",
-        });
-        // fetchRating();
-        getData();
-        setOpen(false);
-      })
-      .catch((err) => {
-        // console.log(err.response);
-        console.log(err);
-        setPopup({
-          open: true,
-          severity: "error",
-          message: err.response.data.message,
-        });
-        // fetchRating();
-        getData();
-        setOpen(false);
-      });
-  };
+  // const changeRating = () => {
+  //   axios
+  //     .put(
+  //       apiList.rating,
+  //       { rating: rating, applicantId: application.jobApplicant.userId },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       setPopup({
+  //         open: true,
+  //         severity: "success",
+  //         message: "Rating updated successfully",
+  //       });
+  //       // fetchRating();
+  //       getData();
+  //       setOpen(false);
+  //     })
+  //     .catch((err) => {
+  //       // console.log(err.response);
+  //       console.log(err);
+  //       setPopup({
+  //         open: true,
+  //         severity: "error",
+  //         message: err.response.data.message,
+  //       });
+  //       // fetchRating();
+  //       getData();
+  //       setOpen(false);
+  //     });
+  // };
 
   const handleClose = () => {
     setOpen(false);
@@ -376,7 +376,7 @@ const ApplicationTile = (props) => {
 
   const colorSet = {
     applied: "#3454D1",
-    shortlisted: "#DC851F",
+    //shortlisted: "#DC851F",
     accepted: "#09BC8A",
     rejected: "#D1345B",
     deleted: "#B49A67",
@@ -384,38 +384,38 @@ const ApplicationTile = (props) => {
     finished: "#4EA5D9",
   };
 
-  const getResume = () => {
-    if (
-      application.jobApplicant.resume &&
-      application.jobApplicant.resume !== ""
-    ) {
-      const address = `${server}${application.jobApplicant.resume}`;
-      console.log(address);
-      axios(address, {
-        method: "GET",
-        responseType: "blob",
-      })
-        .then((response) => {
-          const file = new Blob([response.data], { type: "application/pdf" });
-          const fileURL = URL.createObjectURL(file);
-          window.open(fileURL);
-        })
-        .catch((error) => {
-          console.log(error);
-          setPopup({
-            open: true,
-            severity: "error",
-            message: "Error",
-          });
-        });
-    } else {
-      setPopup({
-        open: true,
-        severity: "error",
-        message: "No resume found",
-      });
-    }
-  };
+  // const getResume = () => {
+  //   if (
+  //     application.jobApplicant.resume &&
+  //     application.jobApplicant.resume !== ""
+  //   ) {
+  //     const address = `${server}${application.jobApplicant.resume}`;
+  //     console.log(address);
+  //     axios(address, {
+  //       method: "GET",
+  //       responseType: "blob",
+  //     })
+  //       .then((response) => {
+  //         const file = new Blob([response.data], { type: "application/pdf" });
+  //         const fileURL = URL.createObjectURL(file);
+  //         window.open(fileURL);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //         setPopup({
+  //           open: true,
+  //           severity: "error",
+  //           message: "Error",
+  //         });
+  //       });
+  //   } else {
+  //     setPopup({
+  //       open: true,
+  //       severity: "error",
+  //       message: "No resume found",
+  //     });
+  //   }
+  // };
 
   const updateStatus = (status) => {
     const address = `${apiList.applications}/${application._id}`;
@@ -472,7 +472,7 @@ const ApplicationTile = (props) => {
               {application.jobApplicant.name}
             </Typography>
           </Grid>
-          <Grid item>
+          {/* <Grid item>
             <Rating
               value={
                 application.jobApplicant.rating !== -1
@@ -480,13 +480,13 @@ const ApplicationTile = (props) => {
                   : null
               }
               readOnly
-            />
-          </Grid>
+            /> 
+          </Grid>*/}
           <Grid item>Tiêu đề bài đăng: {application.job.title}</Grid>
           <Grid item>Loại công việc: {application.job.jobType}</Grid>
           <Grid item>Đã đăng ký: {appliedOn.toLocaleDateString()}</Grid>
           <Grid item>
-            SOP: {application.sop !== "" ? application.sop : "Không nộp đơn"}
+            Mục đích ứng tuyển: {application.sop !== "" ? application.sop : "Không nộp đơn"}
           </Grid>
           <Grid item>
             {application.jobApplicant.skills.map((skill) => (
@@ -495,7 +495,7 @@ const ApplicationTile = (props) => {
           </Grid>
         </Grid>
         <Grid item container direction="column" xs={3}>
-          <Grid item>
+          {/* <Grid item>
             <Button
               variant="contained"
               className={classes.statusBlock}
@@ -504,7 +504,7 @@ const ApplicationTile = (props) => {
             >
               Tải xuống Resume
             </Button>
-          </Grid>
+          </Grid> */}
           <Grid item container xs>
             {/* {buttonSet[application.status]} */}
             <Button
@@ -518,10 +518,10 @@ const ApplicationTile = (props) => {
                 setOpenEndJob(true);
               }}
             >
-              Kết thúc công việc
+              Xóa khỏi danh sách
             </Button>
           </Grid>
-          <Grid item>
+          {/* <Grid item>
             <Button
               variant="contained"
               color="primary"
@@ -532,10 +532,10 @@ const ApplicationTile = (props) => {
             >
               Xếp hạng người đăng ký
             </Button>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
-      <Modal open={open} onClose={handleClose} className={classes.popupDialog}>
+      {/* <Modal open={open} onClose={handleClose} className={classes.popupDialog}>
         <Paper
           style={{
             padding: "20px",
@@ -564,7 +564,7 @@ const ApplicationTile = (props) => {
             Submit
           </Button>
         </Paper>
-      </Modal>
+      </Modal> */}
       <Modal
         open={openEndJob}
         onClose={handleCloseEndJob}
@@ -632,10 +632,10 @@ const AcceptedApplicants = (props) => {
         status: true,
         desc: true,
       },
-      "jobApplicant.rating": {
-        status: false,
-        desc: false,
-      },
+      // "jobApplicant.rating": {
+      //   status: false,
+      //   desc: false,
+      // },
     },
   });
 
@@ -703,7 +703,7 @@ const AcceptedApplicants = (props) => {
         style={{ padding: "30px", minHeight: "93vh" }}
       >
         <Grid item>
-          <Typography variant="h3">Nhân viên</Typography>
+          <Typography variant="h3">Danh sách ứng viên</Typography>
         </Grid>
         <Grid item>
           <IconButton onClick={() => setFilterOpen(true)}>
