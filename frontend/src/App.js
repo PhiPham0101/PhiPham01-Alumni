@@ -8,9 +8,11 @@ import Login from "./component/Login";
 import Logout from "./component/Logout";
 import Signup from "./component/Signup";
 import Home from "./component/Home";
+import Admin from "./component/Admin";
 import Applications from "./component/Applications";
 import Profile from "./component/Profile";
 import CreateJobs from "./component/recruiter/CreateJobs";
+import CreateBlogs from "./component/recruiter/CreateBlogs";
 import MyJobs from "./component/recruiter/MyJobs";
 import MyBlogs from "./component/recruiter/MyBlogs";
 import JobApplications from "./component/recruiter/JobApplications";
@@ -65,6 +67,9 @@ function App() {
               <Route exact path="/home">
                 <Home />
               </Route>
+              <Route exact path="/admin">
+                <Admin />
+              </Route>
               <Route exact path="/applications">
                 <Applications />
               </Route>
@@ -77,6 +82,9 @@ function App() {
               </Route>
               <Route exact path="/addjob">
                 <CreateJobs />
+              </Route>
+              <Route exact path="/addblog">
+                <CreateBlogs />
               </Route>
               <Route exact path="/myjobs">
                 <MyJobs />

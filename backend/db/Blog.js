@@ -10,13 +10,13 @@ let schema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    content: {
+    postname: {
       type: String,
       required: true,
     },
-    likeCount: {
-      type: Number,
-      default: 0,
+    avatar: {
+      type: String,
+      required: true,
     },
   },
   { collation: { locale: "en" } }

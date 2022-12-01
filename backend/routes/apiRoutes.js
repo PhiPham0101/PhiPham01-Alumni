@@ -1367,8 +1367,8 @@ router.post("/blogs", jwtAuth, (req, res) => {
   let blog = new Blog({
     userId: user._id,
     title: data.title,
-    content: data.content,
-    likecount: data.likecount,
+    postname: data.postname,
+    avatar: data.avatar,
   });
 
   blog
@@ -1407,8 +1407,8 @@ router.get("/blogs", jwtAuth, (req, res) => {
   if (req.query.companyname) {
     findParams = {
       ...findParams,
-      content: {
-        $regex: new RegExp(req.query.content, "i"),
+      postname: {
+        $regex: new RegExp(req.query.postname, "i"),
       },
     };
   }
@@ -1416,8 +1416,8 @@ router.get("/blogs", jwtAuth, (req, res) => {
   if (req.query.linkwebsite) {
     findParams = {
       ...findParams,
-      likecount: {
-        $regex: new RegExp(req.query.likecount, "i"),
+      avatar: {
+        $regex: new RegExp(req.query.avatar, "i"),
       },
     };
   }
@@ -1511,8 +1511,8 @@ router.put("/blogs/:id", jwtAuth, (req, res) => {
       return;
     }
     const data = req.body;
-    if (data.maxApplicants) {
-      blog.content = data.content;
+    if (data.postname) {
+      blog.postname = data.postname;
     }
     blog
       .save()

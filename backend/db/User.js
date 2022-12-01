@@ -20,6 +20,10 @@ let schema = new mongoose.Schema(
       enum: ["recruiter", "applicant"],
       required: true,
     },
+    is_admin: {
+      type: Boolean,
+    },
+    
   },
   { collation: { locale: "en" } }
 );

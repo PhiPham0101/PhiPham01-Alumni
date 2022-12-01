@@ -45,7 +45,9 @@ router.post("/signup", (req, res) => {
           res.json({
             token: token,
             type: user.type,
+            is_admin: user.is_admin,
           });
+          console.log(user.is_admin);
         })
         .catch((err) => {
           user
@@ -78,9 +80,12 @@ router.post("/login", (req, res, next) => {
       }
       // Token
       const token = jwt.sign({ _id: user._id }, authKeys.jwtSecretKey);
+      console.log(user.is_admin);
+      console.log(user._id)
       res.json({
         token: token,
         type: user.type,
+        is_admin: user.is_admin,
       });
     }
   )(req, res, next);

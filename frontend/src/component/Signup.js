@@ -236,6 +236,7 @@ const Login = (props) => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
           setLoggedin(isAuth());
+          console.log(response.data.is_admin);
           setPopup({
             open: true,
             severity: "success",

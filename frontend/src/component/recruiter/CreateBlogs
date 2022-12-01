@@ -1,0 +1,217 @@
+import { useContext, useEffect, useState } from "react";
+import {
+  Button,
+  Grid,
+  Typography,
+  Modal,
+  Paper,
+  makeStyles,
+  TextField,
+  MenuItem,
+} from "@material-ui/core";
+import axios from "axios";
+import ChipInput from "material-ui-chip-input";
+
+import { SetPopupContext } from "../../App";
+
+import apiList from "../../lib/apiList";
+
+const useStyles = makeStyles((theme) => ({
+  body: {
+    height: "inherit",
+  },
+  popupDialog: {
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    // padding: "30px",
+  },
+}));
+
+const CreateBlogs = (props) => {
+  const classes = useStyles();
+  const setPopup = useContext(SetPopupContext);
+
+  const [blogDetails, setBlogDetails] = useState({
+    title: "",
+    postname: "",
+    avatar: null,
+  });
+
+  const handleInput = (key, value) => {
+    setBlogDetails({
+      ...blogDetails,
+      [key]: value,
+    });
+  };
+
+  const [inputErrorHandler, setInputErrorHandler] = useState({
+    title: {
+      untouched: true,
+      required: true,
+      error: false,
+      message: "",
+    },
+    postname: {
+      untouched: true,
+      required: true,
+      error: false,
+      message: "",
+    },
+    avatar: {
+      untouched: true,
+      error: false,
+      message: "",
+    },
+  });
+
+  const handleInputError = (key, status, message) => {
+    setInputErrorHandler({
+      ...inputErrorHandler,
+      [key]: {
+        required: true,
+        untouched: false,
+        error: status,
+        message: message,
+      },
+    });
+  };
+
+  const handleUpdate = () => {
+    console.log(blogDetails);
+    axios
+      .post(apiList.blogs, blogDetails, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        setPopup({
+          open: true,
+          severity: "success",
+          message: response.data.message,
+        });
+        setBlogDetails({
+          title: "",
+          postname: "",
+          avatar: null,
+        });
+      })
+      .catch((err) => {
+        setPopup({
+          open: true,
+          severity: "error",
+          message: err.response.data.message,
+        });
+        console.log(err.response);
+      });
+  };
+
+  return (
+    <>
+      <Grid
+        container
+        item
+        direction="column"
+        alignItems="center"
+        style={{ padding: "30px", minHeight: "93vh", width: "" }}
+      >
+        <Grid item>
+          <Typography variant="h3">Thêm bài viết chia sẻ kinh nghiệm</Typography>
+        </Grid>
+        <Grid item container xs direction="column" justify="center">
+          <Grid item>
+            <Paper
+              style={{
+                padding: "20px",
+                outline: "none",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Grid
+                container
+                direction="column"
+                alignItems="stretch"
+                spacing={3}
+              >
+                <Grid item>
+                  <TextField
+                    label="Tiêu đề"
+                    value={blogDetails.title}
+                    onChange={(event) =>
+                      handleInput("title", event.target.value)
+                    }
+                    error={inputErrorHandler.title.error}
+                    helperText={inputErrorHandler.title.message}
+                    onBlur={(event) => {
+                      if (event.target.value === "") {
+                        handleInputError("title", true, "Vui lòng nhập tiêu đề!");
+                      } else {
+                        handleInputError("title", false, "");
+                      }
+                    }}
+                    variant="outlined"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    label="Nội dung"
+                    multiline
+                    rows={8}
+                    style={{ width: "100%" }}
+                    variant="outlined"
+                    value={blogDetails.postname}
+                    onChange={(event) => {
+                      if (
+                        event.target.value.split(" ").filter(function (n) {
+                          return n != "";
+                        }).length <= 250
+                      ) {
+                        handleInput("postname", event.target.value);
+                      }
+                    }}
+                  />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    label="Hình ảnh"
+                    value={blogDetails.avatar}
+                    onChange={(event) =>
+                      handleInput("avatar", event.target.value)
+                    }
+                    error={inputErrorHandler.avatar.error}
+                    helperText={inputErrorHandler.avatar.message}
+                    onBlur={(event) => {
+                      if (event.target.value === "") {
+                        handleInputError("avatar", true, "Vui lòng nhập tên công ty!");
+                      } else {
+                        handleInputError("avatar", false, "");
+                      }
+                    }}
+                    variant="outlined"
+                    fullWidth
+                  />
+                </Grid>
+              </Grid>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ padding: "10px 50px", marginTop: "30px" }}
+                onClick={() => handleUpdate()}
+              >
+                Tạo bài viết
+              </Button>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Grid>
+    </>
+  );
+};
+
+export default CreateBlogs;

@@ -55,6 +55,9 @@ const Navbar = (props) => {
               <Button color="inherit" onClick={() => handleClick("/employees")}>
                 Ứng viên
               </Button>
+              <Button color="inherit" onClick={() => handleClick("/addblog")}>
+                Viết bài
+              </Button>
               <Button color="inherit" onClick={() => handleClick("/myblogs")}>
                 Diễn đàn
               </Button>

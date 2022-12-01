@@ -28,6 +28,9 @@ let schema = new mongoose.Schema(
     bio: {
       type: String,
     },
+    is_admin: {
+      type: Boolean,
+    },
   },
   { collation: { locale: "en" } }
 );

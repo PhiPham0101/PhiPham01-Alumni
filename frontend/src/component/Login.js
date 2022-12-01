@@ -16,6 +16,7 @@ import { SetPopupContext } from "../App";
 
 import apiList from "../lib/apiList";
 import isAuth from "../lib/isAuth";
+import userIsAdmin from "../lib/isAuth";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -34,6 +35,7 @@ const Login = (props) => {
   const setPopup = useContext(SetPopupContext);
 
   const [loggedin, setLoggedin] = useState(isAuth());
+  const [admin, setAdmin] = useState(false);
 
   const [loginDetails, setLoginDetails] = useState({
     email: "",
@@ -78,13 +80,18 @@ const Login = (props) => {
         .then((response) => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
+          localStorage.setItem("fff", response.data.is_admin);
           setLoggedin(isAuth());
+          console.log(response.data.is_admin);
+          if (response.data.is_admin == true){
+            setAdmin(true);
+          };
+          console.log(admin);
           setPopup({
             open: true,
             severity: "success",
             message: "Đăng nhập thành công.",
           });
-          console.log(response);
         })
         .catch((err) => {
           setPopup({
@@ -104,6 +111,7 @@ const Login = (props) => {
   };
 
   return loggedin ? (
+    admin ? <Redirect to="/admin" />: 
     <Redirect to="/" />
   ) : (
     <Paper elevation={3} className={classes.body}>
