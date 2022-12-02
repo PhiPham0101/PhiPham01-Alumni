@@ -114,6 +114,7 @@ const JobTile = (props) => {
           <Grid item>Lương: {job.salary} USD</Grid>
           <Grid item>Người đăng: {job.recruiter.name}</Grid>
           <Grid item>Thời hạn đăng ký: {deadline}</Grid>
+          <Grid item>Thông tin liên hệ: {job.info}</Grid>
 
           <Grid item>
             {job.skillsets.map((skill) => (

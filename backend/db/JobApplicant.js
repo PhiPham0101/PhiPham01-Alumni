@@ -39,6 +39,10 @@ let schema = new mongoose.Schema(
     ],
     skills: [String],
 
+    resume: {
+      type: String,
+    },
+
     profile: {
       type: String,
     },

@@ -113,6 +113,7 @@ const Profile = (props) => {
     name: "",
     education: [],
     skills: [],
+    resume: "",
     profile: "",
   });
 
@@ -275,7 +276,7 @@ const Profile = (props) => {
                   fullWidth
                 />
               </Grid>
-              {/* <Grid item>
+              <Grid item>
                 <FileUploadInput
                   className={classes.inputBox}
                   label="Resume (.pdf)"
@@ -284,7 +285,7 @@ const Profile = (props) => {
                   handleInput={handleInput}
                   identifier={"resume"}
                 />
-              </Grid> */}
+              </Grid>
               <Grid item>
                 <FileUploadInput
                   className={classes.inputBox}

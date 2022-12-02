@@ -20,6 +20,9 @@ mongoose
 if (!fs.existsSync("./public")) {
   fs.mkdirSync("./public");
 }
+if (!fs.existsSync("./public/resume")) {
+  fs.mkdirSync("./public/resume");
+}
 if (!fs.existsSync("./public/profile")) {
   fs.mkdirSync("./public/profile");
 }

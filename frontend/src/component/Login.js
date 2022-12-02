@@ -83,7 +83,7 @@ const Login = (props) => {
           localStorage.setItem("fff", response.data.is_admin);
           setLoggedin(isAuth());
           console.log(response.data.is_admin);
-          if (response.data.is_admin == true){
+          if (response.data.is_admin === true){
             setAdmin(true);
           };
           console.log(admin);

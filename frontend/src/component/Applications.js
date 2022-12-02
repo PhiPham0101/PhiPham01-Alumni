@@ -81,40 +81,6 @@ const ApplicationTile = (props) => {
       });
   };
 
-  // const changeRating = () => {
-  //   axios
-  //     .put(
-  //       apiList.rating,
-  //       { rating: rating, jobId: application.job._id },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         },
-  //       }
-  //     )
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setPopup({
-  //         open: true,
-  //         severity: "success",
-  //         message: "Cập nhật xếp hạng thành công.",
-  //       });
-  //       fetchRating();
-  //       setOpen(false);
-  //     })
-  //     .catch((err) => {
-  //       // console.log(err.response);
-  //       console.log(err);
-  //       setPopup({
-  //         open: true,
-  //         severity: "error",
-  //         message: err.response.data.message,
-  //       });
-  //       fetchRating();
-  //       setOpen(false);
-  //     });
-  // };
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -122,9 +88,9 @@ const ApplicationTile = (props) => {
   const colorSet = {
     applied: "#3454D1",
     accepted: "#09BC8A",
-    rejected: "#D1345B",
-    deleted: "#B49A67",
-    cancelled: "#FF8484",
+    //rejected: "#D1345B",
+    //deleted: "#B49A67",
+    cancelled: "#D1345B",
     finished: "#4EA5D9",
   };
 
@@ -140,12 +106,6 @@ const ApplicationTile = (props) => {
           <Grid item>Người đăng: {application.recruiter.name}</Grid>
           <Grid item>Loại công việc: {application.job.jobType}</Grid>
           <Grid item>Lương: &#8377; {application.job.salary} USD</Grid>
-          {/* <Grid item>
-            Duration :{" "}
-            {application.job.duration !== 0
-              ? `${application.job.duration} month`
-              : `Flexible`}
-          </Grid> */}
           <Grid item>
             {application.job.skillsets.map((skill) => (
               <Chip label={skill} style={{ marginRight: "2px" }} />
@@ -154,7 +114,7 @@ const ApplicationTile = (props) => {
           <Grid item>Đã đăng ký: {appliedOn.toLocaleDateString()}</Grid>
           {application.status === "accepted" ||
           application.status === "finished" ? (
-            <Grid item>Đã tham gia: {joinedOn.toLocaleDateString()}</Grid>
+            <Grid item>Đã được duyệt: {joinedOn.toLocaleDateString()}</Grid>
           ) : null}
         </Grid>
         <Grid item container direction="column" xs={3}>
@@ -172,51 +132,10 @@ const ApplicationTile = (props) => {
           {application.status === "accepted" ||
           application.status === "finished" ? (
             <Grid item>
-              {/* <Button
-                variant="contained"
-                color="primary"
-                className={classes.statusBlock}
-                onClick={() => {
-                  fetchRating();
-                  setOpen(true);
-                }}
-              >
-                Xếp hạng công việc
-              </Button> */}
             </Grid>
           ) : null}
         </Grid>
       </Grid>
-      {/* <Modal open={open} onClose={handleClose} className={classes.popupDialog}>
-        <Paper
-          style={{
-            padding: "20px",
-            outline: "none",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            minWidth: "30%",
-            alignItems: "center",
-          }}
-        >
-          <Rating
-            name="simple-controlled"
-            style={{ marginBottom: "30px" }}
-            value={rating === -1 ? null : rating}
-            onChange={(event, newValue) => {
-              setRating(newValue);
-            }}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ padding: "10px 50px" }}
-            onClick={() => changeRating()}
-          >
-            Submit
-          </Button>
-        </Paper>
-      </Modal> */}
     </Paper>
   );
 };

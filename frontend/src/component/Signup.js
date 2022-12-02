@@ -127,6 +127,7 @@ const Login = (props) => {
     name: "",
     education: [],
     skills: [],
+    resume: "",
     profile: "",
     bio: "",
     code: "",
@@ -420,7 +421,7 @@ const Login = (props) => {
                 }
               />
             </Grid>
-            {/* <Grid item>
+            <Grid item>
               <FileUploadInput
                 className={classes.inputBox}
                 label="Resume (.pdf)"
@@ -439,7 +440,7 @@ const Login = (props) => {
                 handleInput={handleInput}
                 identifier={"profile"}
               />
-            </Grid> */}
+            </Grid>
           </>
         ) : (
           <>

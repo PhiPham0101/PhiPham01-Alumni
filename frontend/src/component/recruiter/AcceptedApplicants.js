@@ -322,6 +322,7 @@ const FilterPopup = (props) => {
 
 const ApplicationTile = (props) => {
   const classes = useStyles();
+  const { job } = props;
   const { application, getData } = props;
   const setPopup = useContext(SetPopupContext);
   const [open, setOpen] = useState(false);
@@ -366,8 +367,45 @@ const ApplicationTile = (props) => {
   //     });
   // };
 
+  const [sop, setSop] = useState("");
+
   const handleClose = () => {
     setOpen(false);
+    setSop("");
+  };
+
+  const handleApply = () => {
+    console.log(job._id);
+    console.log(sop);
+    axios
+      .post(
+        `${apiList.jobs}/${job._id}/applications`,
+        {
+          sop: sop,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((response) => {
+        setPopup({
+          open: true,
+          severity: "success",
+          message: response.data.message,
+        });
+        handleClose();
+      })
+      .catch((err) => {
+        console.log(err.response);
+        setPopup({
+          open: true,
+          severity: "error",
+          message: err.response.data.message,
+        });
+        handleClose();
+      });
   };
 
   const handleCloseEndJob = () => {
@@ -378,44 +416,44 @@ const ApplicationTile = (props) => {
     applied: "#3454D1",
     //shortlisted: "#DC851F",
     accepted: "#09BC8A",
-    rejected: "#D1345B",
-    deleted: "#B49A67",
-    cancelled: "#FF8484",
+    //rejected: "#D1345B",
+    //deleted: "#B49A67",
+    cancelled: "#D1345B",
     finished: "#4EA5D9",
   };
 
-  // const getResume = () => {
-  //   if (
-  //     application.jobApplicant.resume &&
-  //     application.jobApplicant.resume !== ""
-  //   ) {
-  //     const address = `${server}${application.jobApplicant.resume}`;
-  //     console.log(address);
-  //     axios(address, {
-  //       method: "GET",
-  //       responseType: "blob",
-  //     })
-  //       .then((response) => {
-  //         const file = new Blob([response.data], { type: "application/pdf" });
-  //         const fileURL = URL.createObjectURL(file);
-  //         window.open(fileURL);
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //         setPopup({
-  //           open: true,
-  //           severity: "error",
-  //           message: "Error",
-  //         });
-  //       });
-  //   } else {
-  //     setPopup({
-  //       open: true,
-  //       severity: "error",
-  //       message: "No resume found",
-  //     });
-  //   }
-  // };
+  const getResume = () => {
+    if (
+      application.jobApplicant.resume &&
+      application.jobApplicant.resume !== ""
+    ) {
+      const address = `${server}${application.jobApplicant.resume}`;
+      console.log(address);
+      axios(address, {
+        method: "GET",
+        responseType: "blob",
+      })
+        .then((response) => {
+          const file = new Blob([response.data], { type: "application/pdf" });
+          const fileURL = URL.createObjectURL(file);
+          window.open(fileURL);
+        })
+        .catch((error) => {
+          console.log(error);
+          setPopup({
+            open: true,
+            severity: "error",
+            message: "Error",
+          });
+        });
+    } else {
+      setPopup({
+        open: true,
+        severity: "error",
+        message: "Không tìm thấy hồ sơ!",
+      });
+    }
+  };
 
   const updateStatus = (status) => {
     const address = `${apiList.applications}/${application._id}`;
@@ -472,16 +510,6 @@ const ApplicationTile = (props) => {
               {application.jobApplicant.name}
             </Typography>
           </Grid>
-          {/* <Grid item>
-            <Rating
-              value={
-                application.jobApplicant.rating !== -1
-                  ? application.jobApplicant.rating
-                  : null
-              }
-              readOnly
-            /> 
-          </Grid>*/}
           <Grid item>Tiêu đề bài đăng: {application.job.title}</Grid>
           <Grid item>Loại công việc: {application.job.jobType}</Grid>
           <Grid item>Đã đăng ký: {appliedOn.toLocaleDateString()}</Grid>
@@ -495,7 +523,7 @@ const ApplicationTile = (props) => {
           </Grid>
         </Grid>
         <Grid item container direction="column" xs={3}>
-          {/* <Grid item>
+          <Grid item>
             <Button
               variant="contained"
               className={classes.statusBlock}
@@ -504,7 +532,7 @@ const ApplicationTile = (props) => {
             >
               Tải xuống Resume
             </Button>
-          </Grid> */}
+          </Grid>
           <Grid item container xs>
             {/* {buttonSet[application.status]} */}
             <Button
@@ -581,9 +609,23 @@ const ApplicationTile = (props) => {
             alignItems: "center",
           }}
         >
-          <Typography variant="h4" style={{ marginBottom: "10px" }}>
-            Bạn có chắc chắn?
-          </Typography>
+          <TextField
+            label="Lý do không đạt (không quá 250 từ)"
+            multiline
+            rows={8}
+            style={{ width: "100%", marginBottom: "30px" }}
+            variant="outlined"
+            value={sop}
+            onChange={(event) => {
+              if (
+                event.target.value.split(" ").filter(function (n) {
+                  return n != "";
+                }).length <= 250
+              ) {
+                setSop(event.target.value);
+              }
+            }}
+          />
           <Grid container justify="center" spacing={5}>
             <Grid item>
               <Button
@@ -632,10 +674,6 @@ const AcceptedApplicants = (props) => {
         status: true,
         desc: true,
       },
-      // "jobApplicant.rating": {
-      //   status: false,
-      //   desc: false,
-      // },
     },
   });
 

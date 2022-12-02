@@ -30,6 +30,7 @@ let schema = new mongoose.Schema(
     },
     is_admin: {
       type: Boolean,
+      default: false,
     },
   },
   { collation: { locale: "en" } }
