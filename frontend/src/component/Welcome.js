@@ -1,3 +1,4 @@
+import React from "react";
 import { Grid, Typography } from "@material-ui/core";
 import University from '../component/assets/University.mp4';
 

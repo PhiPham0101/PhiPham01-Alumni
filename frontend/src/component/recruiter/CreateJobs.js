@@ -1,3 +1,4 @@
+import React from "react";
 import { useContext, useEffect, useState } from "react";
 import {
   Button,
@@ -43,7 +44,7 @@ const CreateJobs = (props) => {
       .substr(0, 16),
     skillsets: [],
     jobType: "Full Time",
-    salary: 0,
+    salary: 1000,
     maxApplicants: 1000,
     maxPositions: 0,
     info: "",
@@ -147,7 +148,7 @@ const CreateJobs = (props) => {
             .substr(0, 16),
           skillsets: [],
           jobType: "Full Time",
-          salary: 0,
+          salary: 1000,
           maxApplicants: 1000,
           maxPositions: 0,
           info: "",
@@ -277,7 +278,7 @@ const CreateJobs = (props) => {
                     className={classes.inputBox}
                     label="Kỹ năng"
                     variant="outlined"
-                    helperText="Press enter to add skills"
+                    helperText="Nhấn Enter để thêm kỹ năng"
                     value={jobDetails.skillsets}
                     onAdd={(chip) =>
                       setJobDetails({

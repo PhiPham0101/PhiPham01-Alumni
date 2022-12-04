@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect, useContext } from "react";
 import {
   Button,
@@ -155,7 +156,7 @@ const JobTile = (props) => {
             <Typography variant="h5">{job.title}</Typography>
           </Grid>
           <Grid item>Loại công việc: {job.jobType}</Grid>
-          <Grid item>Lương: {job.salary} USD</Grid>
+          <Grid item>Lương: {job.salary}000 (VNĐ)</Grid>
           <Grid item>Ngày đăng bài: {postedOn.toLocaleDateString()}</Grid>
           <Grid item>
             Các vị trí còn lại:{" "}
@@ -445,8 +446,8 @@ const FilterPopup = (props) => {
                   return value * (10000 / 10);
                 }}
                 marks={[
-                  { value: 0, label: "0USD" },
-                  { value: 100, label: "100000USD" },
+                  { value: 0, label: "0" },
+                  { value: 100, label: "100000" },
                 ]}
                 value={searchOptions.salary}
                 onChange={(event, value) =>

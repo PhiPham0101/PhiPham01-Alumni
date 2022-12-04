@@ -1,3 +1,7 @@
+import React from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { RootStore, IBlog, IUser } from '../utils/TypeScript';
+
 import { useContext, useEffect, useState } from "react";
 import {
   Button,
@@ -36,8 +40,12 @@ const CreateBlogs = (props) => {
   const [blogDetails, setBlogDetails] = useState({
     title: "",
     postname: "",
-    avatar: null,
+    descrption: "",
+    thumbnail: "",
   });
+
+  //const { auth } = useSelector((state: RootStore) => state);
+  const dispatch = useDispatch();
 
   const handleInput = (key, value) => {
     setBlogDetails({

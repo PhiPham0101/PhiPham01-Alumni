@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect, useContext } from "react";
 import {
   Button,
@@ -111,7 +112,7 @@ const JobTile = (props) => {
           <Grid item>Link website tuyển dụng: {job.linkwebsite}</Grid>
           <Grid item>Nội dung: {job.postname}</Grid>
           <Grid item>Loại công việc: {job.jobType}</Grid>
-          <Grid item>Lương: {job.salary} USD</Grid>
+          <Grid item>Lương: {job.salary}000 (VNĐ)</Grid>
           <Grid item>Người đăng: {job.recruiter.name}</Grid>
           <Grid item>Thời hạn đăng ký: {deadline}</Grid>
           <Grid item>Thông tin liên hệ: {job.info}</Grid>
@@ -296,8 +297,8 @@ const FilterPopup = (props) => {
                   return value * (10000 / 10);
                 }}
                 marks={[
-                  { value: 0, label: "0USD" },
-                  { value: 100, label: "100000USD" },
+                  { value: 0, label: "0" },
+                  { value: 100, label: "100000" },
                 ]}
                 value={searchOptions.salary}
                 onChange={(event, value) =>

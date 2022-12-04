@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect, useContext } from "react";
 import {
   Button,
@@ -580,7 +581,7 @@ const ApplicationTile = (props) => {
             {application.jobApplicant.education
               .map((edu) => {
                 return `${edu.institutionName} (${edu.startYear}-${
-                  edu.endYear ? edu.endYear : "Ongoing"
+                  edu.endYear ? edu.endYear : "Hiện tại"
                 })`;
               })
               .join(", ")}

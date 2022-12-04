@@ -1,3 +1,4 @@
+import React from "react";
 import { useContext, useEffect, useState } from "react";
 import {
   Button,
@@ -41,7 +42,7 @@ const MultifieldInput = (props) => {
         <Grid item container className={classes.inputBox} key={key}>
           <Grid item xs={6}>
             <TextField
-              label={`Tên trường #${key + 1}`}
+              label={`Tên trường ${key + 1}`}
               value={education[key].institutionName}
               onChange={(event) => {
                 const newEdu = [...education];
