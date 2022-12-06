@@ -17,11 +17,8 @@ import {
   MenuItem,
   Checkbox,
 } from "@material-ui/core";
-import Rating from "@material-ui/lab/Rating";
 import axios from "axios";
-
 import { SetPopupContext } from "../App";
-
 import apiList from "../lib/apiList";
 
 const useStyles = makeStyles((theme) => ({
@@ -55,36 +52,35 @@ const ApplicationTile = (props) => {
   const { application } = props;
   const setPopup = useContext(SetPopupContext);
   const [open, setOpen] = useState(false);
-  const [rating, setRating] = useState(application.job.rating);
 
   const appliedOn = new Date(application.dateOfApplication);
   const joinedOn = new Date(application.dateOfJoining);
 
-  const fetchRating = () => {
-    axios
-      .get(`${apiList.rating}?id=${application.job._id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then((response) => {
-        setRating(response.data.rating);
-        console.log(response.data);
-      })
-      .catch((err) => {
-        // console.log(err.response);
-        console.log(err.response.data);
-        setPopup({
-          open: true,
-          severity: "error",
-          message: "Error",
-        });
-      });
-  };
+  // const fetchRating = () => {
+  //   axios
+  //     .get(`${apiList.rating}?id=${application.job._id}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     })
+  //     .then((response) => {
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  //       console.log(response.data);
+  //     })
+  //     .catch((err) => {
+  //       // console.log(err.response);
+  //       console.log(err.response.data);
+  //       setPopup({
+  //         open: true,
+  //         severity: "error",
+  //         message: "Error",
+  //       });
+  //     });
+  // };
+
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
 
   const colorSet = {
     applied: "#3454D1",
@@ -92,7 +88,7 @@ const ApplicationTile = (props) => {
     //rejected: "#D1345B",
     //deleted: "#B49A67",
     cancelled: "#D1345B",
-    finished: "#4EA5D9",
+    finished: "#808080",
   };
 
   return (
@@ -118,6 +114,12 @@ const ApplicationTile = (props) => {
             <Grid item>Đã được duyệt: {joinedOn.toLocaleDateString()}</Grid>
             
           ) : null}
+          {application.status === "finished" ? (
+            <Grid item style={{ color: "blue" }}>
+              Lý do không được nhận: {application.sopcancel !== "" ? application.sopcancel : "Không được gửi"}
+            </Grid>
+
+          ) : null}
         </Grid>
         <Grid item container direction="column" xs={3}>
           <Grid item xs>
@@ -131,10 +133,9 @@ const ApplicationTile = (props) => {
               {application.status}
             </Paper>
           </Grid>
-          {application.status === "accepted" ||
-          application.status === "finished" ? (
+          {application.status === "finished" ? (
             <Grid item>
-              {/* Lý do không đạt: {finishedOn.toLocaleDateString()} */}
+              {/* Lý do: {application.sopcancel !== "" ? application.sopcancel : "Không được gửi"} */}
             </Grid>
 
           ) : null}
@@ -160,12 +161,12 @@ const Applications = (props) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        //console.log(response.data);
         setApplications(response.data);
       })
       .catch((err) => {
         // console.log(err.response);
-        console.log(err.response.data);
+        //console.log(err.response.data);
         setPopup({
           open: true,
           severity: "error",

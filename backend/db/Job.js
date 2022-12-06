@@ -42,13 +42,13 @@ let schema = new mongoose.Schema(
       validate: [
         {
           validator: Number.isInteger,
-          msg: "maxPostions should be an integer",
+          msg: "Số lượng vị trí cần tuyển phải là số nguyên",
         },
         {
           validator: function (value) {
             return value > 0;
           },
-          msg: "maxPositions should greater than 0",
+          msg: "Số lượng vị trí cần tuyển phải lớn hơn 0",
         },
       ],
     },

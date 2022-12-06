@@ -266,46 +266,48 @@ const ApplicationTile = (props) => {
   const appliedOn = new Date(application.dateOfApplication);
 
   const [sop, setSop] = useState("");
+  const [sopcancel, setSopcancel] = useState("");
 
-  const handleClose = () => {
-    setOpen(false);
-    setSop("");
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  //   setSop("");
+  //   setSopcancel("");
+  // };
 
-  const handleApply = () => {
-    console.log(job._id);
-    console.log(sop);
-    axios
-      .post(
-        `${apiList.jobs}/${job._id}/applications`,
-        {
-          sop: sop,
-          sopcancel: sop,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
-      .then((response) => {
-        setPopup({
-          open: true,
-          severity: "success",
-          message: response.data.message,
-        });
-        handleClose();
-      })
-      .catch((err) => {
-        console.log(err.response);
-        setPopup({
-          open: true,
-          severity: "error",
-          message: err.response.data.message,
-        });
-        handleClose();
-      });
-  };
+  // const handleApply = () => {
+  //   console.log(job._id);
+  //   console.log(sop);
+  //   axios
+  //     .post(
+  //       `${apiList.jobs}/${job._id}/applications`,
+  //       {
+  //         sop: sop,
+  //         sopcancel: sop,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       setPopup({
+  //         open: true,
+  //         severity: "success",
+  //         message: response.data.message,
+  //       });
+  //       handleClose();
+  //     })
+  //     .catch((err) => {
+  //       console.log(err.response);
+  //       setPopup({
+  //         open: true,
+  //         severity: "error",
+  //         message: err.response.data.message,
+  //       });
+  //       handleClose();
+  //     });
+  // };
 
   const handleCloseEndJob = () => {
     setOpenEndJob(false);
@@ -352,11 +354,13 @@ const ApplicationTile = (props) => {
     }
   };
 
-  const updateStatus = (status) => {
+  const updateStatus = (status,sopcancel) => {
     const address = `${apiList.applications}/${application._id}`;
+    //console.log(sopcancel);
     const statusData = {
       status: status,
       dateOfJoining: new Date().toISOString(),
+      sopcancel: sopcancel,
     };
     axios
       .put(address, statusData, {
@@ -413,9 +417,9 @@ const ApplicationTile = (props) => {
           <Grid item>
             Mục đích ứng tuyển: {application.sop !== "" ? application.sop : "Không nộp đơn"}
           </Grid>
-          <Grid item>
-            Lý do không đạt: {application.sopcancel !== "" ? application.sopcancel : "Không nộp đơn"}
-          </Grid>
+          {/* <Grid item>
+            Lý do không đạt: {application.sopcancel !== "" ? application.sopcancel : "Không được gửi"}
+          </Grid> */}
           <Grid item>
             {application.jobApplicant.skills.map((skill) => (
               <Chip label={skill} style={{ marginRight: "2px" }} />
@@ -472,14 +476,14 @@ const ApplicationTile = (props) => {
             rows={8}
             style={{ width: "100%", marginBottom: "30px" }}
             variant="outlined"
-            value={sop}
+            value={sopcancel}
             onChange={(event) => {
               if (
                 event.target.value.split(" ").filter(function (n) {
                   return n != "";
                 }).length <= 250
               ) {
-                setSop(event.target.value);
+                setSopcancel(event.target.value);
               }
             }}
           />
@@ -490,7 +494,7 @@ const ApplicationTile = (props) => {
                 color="secondary"
                 style={{ padding: "10px 50px" }}
                 onClick={() => {
-                  updateStatus("finished");
+                  updateStatus("finished", sopcancel);
                 }}
               >
                 Đồng ý
@@ -580,7 +584,7 @@ const AcceptedApplicants = (props) => {
         //console.log(err.response);
         setApplications([]);
         setPopup({
-          open: true,
+          open: false,
           severity: "error",
           //message: err.response.data.message,
         });

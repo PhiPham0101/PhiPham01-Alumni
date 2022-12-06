@@ -85,10 +85,11 @@ const BlogTile = (props) => {
       .catch((err) => {
         setPopup({
           open: true,
-          severity: "error",
-          message: err.response.data.message,
+          //severity: "error",
+          message: "Xóa bài viết thành công",
         });
         handleClose();
+        window.location.reload();
       });
   };
 
@@ -111,10 +112,11 @@ const BlogTile = (props) => {
       .catch((err) => {
         setPopup({
           open: true,
-          severity: "error",
-          message: err.response,
+          //severity: "error",
+          message: "Cập nhật bài viết thành công",
         });
         handleCloseUpdate();
+        window.location.reload();
       });
   };
 
@@ -360,7 +362,7 @@ const Blogs = (props) => {
         >
           <Grid item xs>
             <TextField
-              label="Tìm kiếm bài đăng"
+              label="Tìm kiếm bài viết chia sẻ kinh nghiệm"
               value={searchOptions.query}
               onChange={(event) =>
                 setSearchOptions({

@@ -154,10 +154,6 @@ const JobTile = (props) => {
           <Grid item>Loại công việc: {job.jobType}</Grid>
           <Grid item>Lương: {job.salary}000 (VNĐ)</Grid>
           <Grid item>Ngày đăng bài: {postedOn.toLocaleDateString()}</Grid>
-          {/* <Grid item>
-            Các vị trí còn lại:{" "}
-            {job.maxPositions - job.acceptedCandidates}
-          </Grid> */}
           <Grid item>
             {job.skillsets.map((skill) => (
               <Chip label={skill} style={{ marginRight: "2px" }} />
@@ -455,7 +451,7 @@ const FilterPopup = (props) => {
               />
             </Grid>
           </Grid>
-          <Grid container item alignItems="center">
+          {/* <Grid container item alignItems="center">
             <Grid item xs={3}>
               Bộ lọc
             </Grid>
@@ -517,7 +513,7 @@ const FilterPopup = (props) => {
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          </Grid> */}
 
           <Grid item>
             <Button

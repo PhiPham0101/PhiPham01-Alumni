@@ -307,7 +307,7 @@ const FilterPopup = (props) => {
               />
             </Grid>
           </Grid>
-          <Grid container item alignItems="center">
+          {/* <Grid container item alignItems="center">
             <Grid item xs={3}>
               Bộ lọc
             </Grid>
@@ -369,7 +369,7 @@ const FilterPopup = (props) => {
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          </Grid> */}
 
           <Grid item>
             <Button

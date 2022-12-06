@@ -398,7 +398,7 @@ const ApplicationTile = (props) => {
               }}
             >
               <TextField
-                label="Lý do không đạt (không quá 250 từ)"
+                label="Lý do từ chối (không quá 250 từ)"
                 multiline
                 rows={8}
                 style={{ width: "100%", marginBottom: "30px" }}
@@ -421,7 +421,7 @@ const ApplicationTile = (props) => {
                     color="secondary"
                     style={{ padding: "10px 50px" }}
                     onClick={() => {
-                      updateStatus("finished");
+                      updateStatus("cancelled");
                     }}
                   >
                     Đồng ý
@@ -483,16 +483,6 @@ const ApplicationTile = (props) => {
               {application.jobApplicant.name}
             </Typography>
           </Grid>
-          {/* <Grid item>
-            <Rating
-              value={
-                application.jobApplicant.rating !== -1
-                  ? application.jobApplicant.rating
-                  : null
-              }
-              readOnly
-            />
-          </Grid> */}
           <Grid item>Ngày nộp hồ sơ: {appliedOn.toLocaleDateString()}</Grid>
           <Grid item>
             Trường:{" "}
@@ -528,28 +518,6 @@ const ApplicationTile = (props) => {
           </Grid>
         </Grid>
       </Grid>
-      <Modal open={open} onClose={handleClose} className={classes.popupDialog}>
-        <Paper
-          style={{
-            padding: "20px",
-            outline: "none",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            minWidth: "30%",
-            alignItems: "center",
-          }}
-        >
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ padding: "10px 50px" }}
-          // onClick={() => changeRating()}
-          >
-            Submit
-          </Button>
-        </Paper>
-      </Modal>
     </Paper>
   );
 };
@@ -563,7 +531,6 @@ const JobApplications = (props) => {
     status: {
       all: false,
       applied: false,
-      //shortlisted: false,
     },
     sort: {
       "jobApplicant.name": {
@@ -573,10 +540,6 @@ const JobApplications = (props) => {
       dateOfApplication: {
         status: true,
         desc: true,
-      },
-      "jobApplicant.rating": {
-        status: false,
-        desc: false,
       },
     },
   });
@@ -588,15 +551,9 @@ const JobApplications = (props) => {
   const getData = () => {
     let searchParams = [];
 
-    // if (searchOptions.status.rejected) {
-    //   searchParams = [...searchParams, `status=rejected`];
-    // }
     if (searchOptions.status.applied) {
       searchParams = [...searchParams, `status=applied`];
     }
-    // if (searchOptions.status.shortlisted) {
-    //   searchParams = [...searchParams, `status=shortlisted`];
-    // }
 
     let asc = [],
       desc = [];
@@ -632,7 +589,7 @@ const JobApplications = (props) => {
         setApplications(response.data);
       })
       .catch((err) => {
-        console.log(err.response);
+        //console.log(err.response);
         // console.log(err.response.data);
         setApplications([]);
         setPopup({

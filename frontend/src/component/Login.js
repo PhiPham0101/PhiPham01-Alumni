@@ -98,7 +98,7 @@ const Login = (props) => {
           setPopup({
             open: true,
             severity: "error",
-            message: "error",
+            message: err.response.data.message,
           });
           console.log(err.response);
         });

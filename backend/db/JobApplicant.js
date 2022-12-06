@@ -55,7 +55,7 @@ let schema = new mongoose.Schema(
         },
         msg: "Mục đích ứng tuyển không được lớn hơn 250 từ",
       },
-    }
+    },
   },
   { collation: { locale: "en" } }
 );

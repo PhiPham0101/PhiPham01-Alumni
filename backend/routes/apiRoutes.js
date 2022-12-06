@@ -526,7 +526,7 @@ router.post("/jobs/:id/applications", jwtAuth, (req, res) => {
   Application.findOne({
     userId: user._id,
     jobId: jobId,
-    status: {
+    status: { 
       $nin: ["accepted", "cancelled"],
     },
   })
@@ -713,6 +713,7 @@ router.put("/applications/:id", jwtAuth, (req, res) => {
   const user = req.user;
   const id = req.params.id;
   const status = req.body.status;
+  const sopcancel = req.body.sopcancel;
 
   if (user.type === "recruiter") {
     if (status === "accepted") {
@@ -748,10 +749,17 @@ router.put("/applications/:id", jwtAuth, (req, res) => {
               if (activeApplicationCount < job.maxPositions) {
                 // accepted
                 application.status = status;
+
+                console.log(sopcancel);
+                console.log('hgffgggffg');
                 application.dateOfJoining = req.body.dateOfJoining;
+                application.sopcancel = sopcancel;
+
                 application
                   .save()
                   .then(() => {
+                console.log('bbbbbbbbbbbbbbbbbbb');
+
                     Application.updateMany(
                       {
                         _id: {
@@ -774,6 +782,8 @@ router.put("/applications/:id", jwtAuth, (req, res) => {
                       { multi: true }
                     )
                       .then(() => {
+                        console.log('aaaaaaaaaaaaaaaaaa');
+                        
                         if (status === "accepted") {
                           Job.findOneAndUpdate(
                             {
@@ -819,6 +829,11 @@ router.put("/applications/:id", jwtAuth, (req, res) => {
           res.status(400).json(err);
         });
     } else {
+      console.log('gffffffffffff');
+      //In lý do từ chối
+      console.log(sopcancel);
+
+
       Application.findOneAndUpdate(
         {
           _id: id,
@@ -830,10 +845,13 @@ router.put("/applications/:id", jwtAuth, (req, res) => {
         {
           $set: {
             status: status,
+            sopcancel: sopcancel,
           },
         }
       )
         .then((application) => {
+          console.log('qqqqqqqqqqqqqqqqqq');
+
           if (application === null) {
             res.status(400).json({
               message: "Không thể cập nhật trạng thái!",
@@ -858,6 +876,8 @@ router.put("/applications/:id", jwtAuth, (req, res) => {
     if (status === "cancelled") {
       console.log(id);
       console.log(user._id);
+      console.log('sopcancelrrrrrrr2');
+
       Application.findOneAndUpdate(
         {
           _id: id,
@@ -1168,7 +1188,6 @@ router.put("/blogs/:id", jwtAuth, (req, res) => {
       })
       .catch((err) => {
         res.status(400).json(err);
-        message: err;
       });
   })
   .catch((err) => {
