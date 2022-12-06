@@ -106,7 +106,7 @@ const ApplicationTile = (props) => {
           <Grid item>Link website tuyển dụng: {application.job.linkwebsite}</Grid>
           <Grid item>Người đăng: {application.recruiter.name}</Grid>
           <Grid item>Loại công việc: {application.job.jobType}</Grid>
-          <Grid item>Lương: &#8377; {application.job.salary} USD</Grid>
+          <Grid item>Lương: {application.job.salary}000 (VNĐ)</Grid>
           <Grid item>
             {application.job.skillsets.map((skill) => (
               <Chip label={skill} style={{ marginRight: "2px" }} />
@@ -116,6 +116,7 @@ const ApplicationTile = (props) => {
           {application.status === "accepted" ||
           application.status === "finished" ? (
             <Grid item>Đã được duyệt: {joinedOn.toLocaleDateString()}</Grid>
+            
           ) : null}
         </Grid>
         <Grid item container direction="column" xs={3}>
@@ -133,7 +134,9 @@ const ApplicationTile = (props) => {
           {application.status === "accepted" ||
           application.status === "finished" ? (
             <Grid item>
+              {/* Lý do không đạt: {finishedOn.toLocaleDateString()} */}
             </Grid>
+
           ) : null}
         </Grid>
       </Grid>
@@ -180,7 +183,7 @@ const Applications = (props) => {
       style={{ padding: "30px", minHeight: "93vh" }}
     >
       <Grid item>
-        <Typography variant="h3">Hồ sơ ứng tuyển</Typography>
+        <Typography variant="h3">Danh sách ứng tuyển</Typography>
       </Grid>
       <Grid
         container

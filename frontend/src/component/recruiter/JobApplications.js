@@ -5,28 +5,22 @@ import {
   Chip,
   Grid,
   IconButton,
-  InputAdornment,
   makeStyles,
   Paper,
   TextField,
   Typography,
   Modal,
-  Slider,
   FormControlLabel,
-  FormGroup,
-  MenuItem,
   Checkbox,
   Avatar,
 } from "@material-ui/core";
 import { useParams } from "react-router-dom";
-import Rating from "@material-ui/lab/Rating";
 import axios from "axios";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 
 import { SetPopupContext } from "../../App";
-
 import apiList, { server } from "../../lib/apiList";
 
 const useStyles = makeStyles((theme) => ({
@@ -81,28 +75,7 @@ const FilterPopup = (props) => {
               item
               xs={9}
               justify="space-around"
-              // alignItems="center"
             >
-              {/* <Grid item>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      name="rejected"
-                      checked={searchOptions.status.rejected}
-                      onChange={(event) => {
-                        setSearchOptions({
-                          ...searchOptions,
-                          status: {
-                            ...searchOptions.status,
-                            [event.target.name]: event.target.checked,
-                          },
-                        });
-                      }}
-                    />
-                  }
-                  label="Từ chối"
-                />
-              </Grid> */}
               <Grid item>
                 <FormControlLabel
                   control={
@@ -123,26 +96,6 @@ const FilterPopup = (props) => {
                   label="Đã đăng ký"
                 />
               </Grid>
-              {/* <Grid item>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      name="shortlisted"
-                      checked={searchOptions.status.shortlisted}
-                      onChange={(event) => {
-                        setSearchOptions({
-                          ...searchOptions,
-                          status: {
-                            ...searchOptions.status,
-                            [event.target.name]: event.target.checked,
-                          },
-                        });
-                      }}
-                    />
-                  }
-                  label="Danh sách rút gọn"
-                />
-              </Grid> */}
             </Grid>
           </Grid>
           <Grid container item alignItems="center">
@@ -262,63 +215,6 @@ const FilterPopup = (props) => {
                   </IconButton>
                 </Grid>
               </Grid>
-              {/* <Grid
-                item
-                container
-                xs={4}
-                justify="space-around"
-                alignItems="center"
-                style={{ border: "2px solid #D1D1D1", borderRadius: "10px" }}
-              >
-                <Grid item>
-                  <Checkbox
-                    name="rating"
-                    checked={searchOptions.sort["jobApplicant.rating"].status}
-                    onChange={(event) =>
-                      setSearchOptions({
-                        ...searchOptions,
-                        sort: {
-                          ...searchOptions.sort,
-                          "jobApplicant.rating": {
-                            ...searchOptions.sort[["jobApplicant.rating"]],
-                            status: event.target.checked,
-                          },
-                        },
-                      })
-                    }
-                    id="rating"
-                  />
-                </Grid>
-                <Grid item>
-                  <label for="rating">
-                    <Typography>Xếp hạng</Typography>
-                  </label>
-                </Grid>
-                <Grid item>
-                  <IconButton
-                    disabled={!searchOptions.sort["jobApplicant.rating"].status}
-                    onClick={() => {
-                      setSearchOptions({
-                        ...searchOptions,
-                        sort: {
-                          ...searchOptions.sort,
-                          "jobApplicant.rating": {
-                            ...searchOptions.sort["jobApplicant.rating"],
-                            desc: !searchOptions.sort["jobApplicant.rating"]
-                              .desc,
-                          },
-                        },
-                      });
-                    }}
-                  >
-                    {searchOptions.sort["jobApplicant.rating"].desc ? (
-                      <ArrowDownwardIcon />
-                    ) : (
-                      <ArrowUpwardIcon />
-                    )}
-                  </IconButton>
-                </Grid>
-              </Grid> */}
             </Grid>
           </Grid>
 
@@ -343,8 +239,14 @@ const ApplicationTile = (props) => {
   const { application, getData } = props;
   const setPopup = useContext(SetPopupContext);
   const [open, setOpen] = useState(false);
+  const [openEndJob, setOpenEndJob] = useState(false);
 
   const appliedOn = new Date(application.dateOfApplication);
+  const [sop, setSop] = useState("");
+
+  const handleCloseEndJob = () => {
+    setOpenEndJob(false);
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -352,7 +254,7 @@ const ApplicationTile = (props) => {
 
   const colorSet = {
     applied: "#3454D1",
-   // shortlisted: "#DC851F",
+    // shortlisted: "#DC851F",
     accepted: "#09BC8A",
     // rejected: "#D1345B",
     //deleted: "#B49A67",
@@ -365,7 +267,7 @@ const ApplicationTile = (props) => {
       application.jobApplicant.resume &&
       application.jobApplicant.resume !== ""
     ) {
-      const address = `${server}${application.jobApplicant.resume}`;
+      const address = `${server}/resume/${application.jobApplicant.resume}`;
       console.log(address);
       axios(address, {
         method: "GET",
@@ -452,49 +354,6 @@ const ApplicationTile = (props) => {
         </Grid>
       </>
     ),
-    // shortlisted: (
-    //   <>
-    //     <Grid item xs>
-    //       <Button
-    //         className={classes.statusBlock}
-    //         style={{
-    //           background: colorSet["accepted"],
-    //           color: "#ffffff",
-    //         }}
-    //         onClick={() => updateStatus("accepted")}
-    //       >
-    //         Chấp nhận
-    //       </Button>
-    //     </Grid>
-    //     <Grid item xs>
-    //       <Button
-    //         className={classes.statusBlock}
-    //         style={{
-    //           background: colorSet["rejected"],
-    //           color: "#ffffff",
-    //         }}
-    //         onClick={() => updateStatus("rejected")}
-    //       >
-    //         Từ chối
-    //       </Button>
-    //     </Grid>
-    //   </>
-    // ),
-    // rejected: (
-    //   <>
-    //     <Grid item xs>
-    //       <Paper
-    //         className={classes.statusBlock}
-    //         style={{
-    //           background: colorSet["rejected"],
-    //           color: "#ffffff",
-    //         }}
-    //       >
-    //         Từ chối
-    //       </Paper>
-    //     </Grid>
-    //   </>
-    // ),
     accepted: (
       <>
         <Grid item xs>
@@ -522,6 +381,65 @@ const ApplicationTile = (props) => {
           >
             Đã từ chối
           </Paper>
+          <Modal
+            open={openEndJob}
+            onClose={handleCloseEndJob}
+            className={classes.popupDialog}
+          >
+            <Paper
+              style={{
+                padding: "20px",
+                outline: "none",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                minWidth: "30%",
+                alignItems: "center",
+              }}
+            >
+              <TextField
+                label="Lý do không đạt (không quá 250 từ)"
+                multiline
+                rows={8}
+                style={{ width: "100%", marginBottom: "30px" }}
+                variant="outlined"
+                value={sop}
+                onChange={(event) => {
+                  if (
+                    event.target.value.split(" ").filter(function (n) {
+                      return n != "";
+                    }).length <= 250
+                  ) {
+                    setSop(event.target.value);
+                  }
+                }}
+              />
+              <Grid container justify="center" spacing={5}>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    style={{ padding: "10px 50px" }}
+                    onClick={() => {
+                      updateStatus("finished");
+                    }}
+                  >
+                    Đồng ý
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    style={{ padding: "10px 50px" }}
+                    onClick={() => handleCloseEndJob()}
+                  >
+                    Hủy
+                  </Button>
+                </Grid>
+              </Grid>
+            </Paper>
+          </Modal>
         </Grid>
       </>
     ),
@@ -555,17 +473,17 @@ const ApplicationTile = (props) => {
           }}
         >
           <Avatar
-            src={`${server}${application.jobApplicant.profile}`}
+            src={`${server}/profile/${application.jobApplicant.profile}`}
             className={classes.avatar}
           />
         </Grid>
         <Grid container item xs={7} spacing={1} direction="column">
           <Grid item>
-            <Typography variant="h5">
+            <Typography variant="h5" style={{ color: "orange" }}>
               {application.jobApplicant.name}
             </Typography>
           </Grid>
-          <Grid item>
+          {/* <Grid item>
             <Rating
               value={
                 application.jobApplicant.rating !== -1
@@ -574,15 +492,14 @@ const ApplicationTile = (props) => {
               }
               readOnly
             />
-          </Grid>
-          <Grid item>Đã đăng ký: {appliedOn.toLocaleDateString()}</Grid>
+          </Grid> */}
+          <Grid item>Ngày nộp hồ sơ: {appliedOn.toLocaleDateString()}</Grid>
           <Grid item>
             Trường:{" "}
             {application.jobApplicant.education
               .map((edu) => {
-                return `${edu.institutionName} (${edu.startYear}-${
-                  edu.endYear ? edu.endYear : "Hiện tại"
-                })`;
+                return `${edu.institutionName} (${edu.startYear}-${edu.endYear ? edu.endYear : "Hiện tại"
+                  })`;
               })
               .join(", ")}
           </Grid>
@@ -627,7 +544,7 @@ const ApplicationTile = (props) => {
             variant="contained"
             color="primary"
             style={{ padding: "10px 50px" }}
-            // onClick={() => changeRating()}
+          // onClick={() => changeRating()}
           >
             Submit
           </Button>

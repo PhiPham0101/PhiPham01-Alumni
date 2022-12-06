@@ -5,28 +5,20 @@ import {
   Chip,
   Grid,
   IconButton,
-  InputAdornment,
   makeStyles,
   Paper,
   TextField,
   Typography,
   Modal,
-  Slider,
-  FormControlLabel,
-  FormGroup,
-  MenuItem,
   Checkbox,
   Avatar,
 } from "@material-ui/core";
-import { useParams } from "react-router-dom";
-import Rating from "@material-ui/lab/Rating";
 import axios from "axios";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 
 import { SetPopupContext } from "../../App";
-
 import apiList, { server } from "../../lib/apiList";
 
 const useStyles = makeStyles((theme) => ({
@@ -245,66 +237,8 @@ const FilterPopup = (props) => {
                   </IconButton>
                 </Grid>
               </Grid>
-              {/* <Grid
-                item
-                container
-                xs={6}
-                justify="space-around"
-                alignItems="center"
-                style={{ border: "2px solid #D1D1D1", borderRadius: "10px" }}
-              >
-                <Grid item>
-                  <Checkbox
-                    name="rating"
-                    checked={searchOptions.sort["jobApplicant.rating"].status}
-                    onChange={(event) =>
-                      setSearchOptions({
-                        ...searchOptions,
-                        sort: {
-                          ...searchOptions.sort,
-                          "jobApplicant.rating": {
-                            ...searchOptions.sort[["jobApplicant.rating"]],
-                            status: event.target.checked,
-                          },
-                        },
-                      })
-                    }
-                    id="rating"
-                  />
-                </Grid>
-                <Grid item>
-                  <label for="rating">
-                    <Typography>Xếp hạng</Typography>
-                  </label>
-                </Grid>
-                <Grid item>
-                  <IconButton
-                    disabled={!searchOptions.sort["jobApplicant.rating"].status}
-                    onClick={() => {
-                      setSearchOptions({
-                        ...searchOptions,
-                        sort: {
-                          ...searchOptions.sort,
-                          "jobApplicant.rating": {
-                            ...searchOptions.sort["jobApplicant.rating"],
-                            desc: !searchOptions.sort["jobApplicant.rating"]
-                              .desc,
-                          },
-                        },
-                      });
-                    }}
-                  >
-                    {searchOptions.sort["jobApplicant.rating"].desc ? (
-                      <ArrowDownwardIcon />
-                    ) : (
-                      <ArrowUpwardIcon />
-                    )}
-                  </IconButton>
-                </Grid>
-              </Grid> */}
             </Grid>
           </Grid>
-
           <Grid item>
             <Button
               variant="contained"
@@ -328,45 +262,8 @@ const ApplicationTile = (props) => {
   const setPopup = useContext(SetPopupContext);
   const [open, setOpen] = useState(false);
   const [openEndJob, setOpenEndJob] = useState(false);
-  // const [rating, setRating] = useState(application.jobApplicant.rating);
 
   const appliedOn = new Date(application.dateOfApplication);
-
-  // const changeRating = () => {
-  //   axios
-  //     .put(
-  //       apiList.rating,
-  //       { rating: rating, applicantId: application.jobApplicant.userId },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         },
-  //       }
-  //     )
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setPopup({
-  //         open: true,
-  //         severity: "success",
-  //         message: "Rating updated successfully",
-  //       });
-  //       // fetchRating();
-  //       getData();
-  //       setOpen(false);
-  //     })
-  //     .catch((err) => {
-  //       // console.log(err.response);
-  //       console.log(err);
-  //       setPopup({
-  //         open: true,
-  //         severity: "error",
-  //         message: err.response.data.message,
-  //       });
-  //       // fetchRating();
-  //       getData();
-  //       setOpen(false);
-  //     });
-  // };
 
   const [sop, setSop] = useState("");
 
@@ -383,6 +280,7 @@ const ApplicationTile = (props) => {
         `${apiList.jobs}/${job._id}/applications`,
         {
           sop: sop,
+          sopcancel: sop,
         },
         {
           headers: {
@@ -415,10 +313,7 @@ const ApplicationTile = (props) => {
 
   const colorSet = {
     applied: "#3454D1",
-    //shortlisted: "#DC851F",
     accepted: "#09BC8A",
-    //rejected: "#D1345B",
-    //deleted: "#B49A67",
     cancelled: "#D1345B",
     finished: "#4EA5D9",
   };
@@ -428,23 +323,24 @@ const ApplicationTile = (props) => {
       application.jobApplicant.resume &&
       application.jobApplicant.resume !== ""
     ) {
-      const address = `${server}${application.jobApplicant.resume}`;
+      const address = `${server}/resume/${application.jobApplicant.resume}`;
       console.log(address);
       axios(address, {
         method: "GET",
         responseType: "blob",
       })
         .then((response) => {
+          console.log(response.data)
           const file = new Blob([response.data], { type: "application/pdf" });
           const fileURL = URL.createObjectURL(file);
           window.open(fileURL);
         })
         .catch((error) => {
-          console.log(error);
+          //console.log(error);
           setPopup({
             open: true,
             severity: "error",
-            message: "Error",
+            //message: error.response.data.message,
           });
         });
     } else {
@@ -501,7 +397,7 @@ const ApplicationTile = (props) => {
           }}
         >
           <Avatar
-            src={`${server}${application.jobApplicant.profile}`}
+            src={`${server}/profile/${application.jobApplicant.profile}`}
             className={classes.avatar}
           />
         </Grid>
@@ -516,6 +412,9 @@ const ApplicationTile = (props) => {
           <Grid item>Đã đăng ký: {appliedOn.toLocaleDateString()}</Grid>
           <Grid item>
             Mục đích ứng tuyển: {application.sop !== "" ? application.sop : "Không nộp đơn"}
+          </Grid>
+          <Grid item>
+            Lý do không đạt: {application.sopcancel !== "" ? application.sopcancel : "Không nộp đơn"}
           </Grid>
           <Grid item>
             {application.jobApplicant.skills.map((skill) => (
@@ -535,7 +434,6 @@ const ApplicationTile = (props) => {
             </Button>
           </Grid>
           <Grid item container xs>
-            {/* {buttonSet[application.status]} */}
             <Button
               variant="contained"
               color="primary"
@@ -550,50 +448,8 @@ const ApplicationTile = (props) => {
               Xóa khỏi danh sách
             </Button>
           </Grid>
-          {/* <Grid item>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.statusBlock}
-              onClick={() => {
-                setOpen(true);
-              }}
-            >
-              Xếp hạng người đăng ký
-            </Button>
-          </Grid> */}
         </Grid>
       </Grid>
-      {/* <Modal open={open} onClose={handleClose} className={classes.popupDialog}>
-        <Paper
-          style={{
-            padding: "20px",
-            outline: "none",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            minWidth: "30%",
-            alignItems: "center",
-          }}
-        >
-          <Rating
-            name="simple-controlled"
-            style={{ marginBottom: "30px" }}
-            value={rating === -1 ? null : rating}
-            onChange={(event, newValue) => {
-              setRating(newValue);
-            }}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ padding: "10px 50px" }}
-            onClick={() => changeRating()}
-          >
-            Submit
-          </Button>
-        </Paper>
-      </Modal> */}
       <Modal
         open={openEndJob}
         onClose={handleCloseEndJob}
@@ -721,13 +577,12 @@ const AcceptedApplicants = (props) => {
         setApplications(response.data);
       })
       .catch((err) => {
-        console.log(err.response);
-        // console.log(err.response.data);
+        //console.log(err.response);
         setApplications([]);
         setPopup({
           open: true,
           severity: "error",
-          message: err.response.data.message,
+          //message: err.response.data.message,
         });
       });
   };

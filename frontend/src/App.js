@@ -15,7 +15,7 @@ import Profile from "./component/Profile";
 import CreateJobs from "./component/recruiter/CreateJobs";
 import CreateBlogs from "./component/recruiter/CreateBlogs";
 import MyJobs from "./component/recruiter/MyJobs";
-import MyBlogs from "./component/recruiter/MyBlogs";
+import MyBlogs from "./component/MyBlogs";
 import JobApplications from "./component/recruiter/JobApplications";
 import AcceptedApplicants from "./component/recruiter/AcceptedApplicants";
 import RecruiterProfile from "./component/recruiter/Profile";

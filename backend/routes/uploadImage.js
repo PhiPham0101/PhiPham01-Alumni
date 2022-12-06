@@ -4,16 +4,16 @@ const router = express.Router();
 
 const Storage =multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "./public/resume");
+        cb(null, "./public/profile");
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname);
     }
 });
 
-var upload = multer({ storage: Storage}).single("fileResume");
+var upload = multer({ storage: Storage}).single("fileImage");
 
-router.post("/resume", (req, res) => {
+router.post("/profile", (req, res) => {
     upload(req, res, err => {
         if(err){
             return res.send(err)

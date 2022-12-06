@@ -11,45 +11,46 @@ const FileUploadInput = (props) => {
 
   const { uploadTo, identifier, handleInput } = props;
 
-  const [file, setFile] = useState("");
+  const [filename, setFilename] = useState("");
   const [uploadPercentage, setUploadPercentage] = useState(0);
 
   const handleUpload = () => {
-    console.log(file);
-    const data = new FormData();
-    data.append("file", file);
-    Axios.post(uploadTo, data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      onUploadProgress: (progressEvent) => {
-        setUploadPercentage(
-          parseInt(
-            Math.round((progressEvent.loaded * 100) / progressEvent.total)
-          )
-        );
-      },
-    })
-      .then((response) => {
-        console.log(response.data);
-        handleInput(identifier, response.data.url);
-        setPopup({
-          open: true,
-          severity: "success",
-          message: response.data.message,
-        });
-      })
-      .catch((err) => {
-        console.log(err.response);
-        setPopup({
-          open: true,
-          severity: "error",
-          message: err.response.statusText,
-          //   message: err.response.data
-          //     ? err.response.data.message
-          //     : err.response.statusText,
-        });
-      });
+    props.handleInput()
+    // console.log(file);
+    // const data = new FormData();
+    // data.append("file", file);
+    // Axios.post(uploadTo, data, {
+    //   headers: {
+    //     "Content-Type": "multipart/form-data",
+    //   },
+    //   onUploadProgress: (progressEvent) => {
+    //     setUploadPercentage(
+    //       parseInt(
+    //         Math.round((progressEvent.loaded * 100) / progressEvent.total)
+    //       )
+    //     );
+    //   },
+    // })
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     handleInput(identifier, response.data.url);
+    //     setPopup({
+    //       open: true,
+    //       severity: "success",
+    //       message: response.data.message,
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.response);
+    //     setPopup({
+    //       open: true,
+    //       severity: "error",
+    //       message: err.response.statusText,
+    //       //   message: err.response.data
+    //       //     ? err.response.data.message
+    //       //     : err.response.statusText,
+    //     });
+    //   });
   };
 
   return (
@@ -67,9 +68,12 @@ const FileUploadInput = (props) => {
               type="file"
               style={{ display: "none" }}
               onChange={(event) => {
-                console.log(event.target.files);
-                setUploadPercentage(0);
-                setFile(event.target.files[0]);
+                console.log('change')
+                // console.log(event.target.files);
+                // setUploadPercentage(0);
+                const fs = event.target.files[0]
+                setFilename(fs.name)
+                props.change(event);
               }}
               // onChange={onChange}
               // onChange={
@@ -82,7 +86,7 @@ const FileUploadInput = (props) => {
         <Grid item xs={6}>
           <TextField
             label={props.label}
-            value={file ? file.name || "" : ""}
+            value={filename ? filename || "" : ""}
             InputProps={{
               readOnly: true,
             }}
@@ -96,7 +100,7 @@ const FileUploadInput = (props) => {
             color="secondary"
             style={{ width: "100%", height: "100%" }}
             onClick={() => handleUpload()}
-            disabled={file ? false : true}
+            disabled={filename ? false : true}
           >
             <CloudUpload />
           </Button>

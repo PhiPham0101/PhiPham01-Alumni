@@ -118,7 +118,7 @@ const MultifieldInput = (props) => {
 const Login = (props) => {
   const classes = useStyles();
   const setPopup = useContext(SetPopupContext);
-
+  const [resume, setResume] = useState();
   const [loggedin, setLoggedin] = useState(isAuth());
 
   const [signupDetails, setSignupDetails] = useState({
@@ -177,6 +177,31 @@ const Login = (props) => {
     },
   });
 
+  const getfile = (event) => {
+    const file = event.target.files[0];
+    setSignupDetails({...signupDetails, resume: file.name});
+    file.preview = URL.createObjectURL(file);
+    setResume(file);
+  }
+
+  const upResume = () => {
+    const cv = new FormData();
+    cv.append("fileResume",resume);
+    axios
+    .post(apiList.uploadResume, cv, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        'content-type':'multipart/form-data',
+      },
+    })
+    .then((response) => {
+      console.log(response)
+    })
+    .catch(err => {
+      console.log(err)
+    }) 
+  };
+
   const handleInput = (key, value) => {
     setSignupDetails({
       ...signupDetails,
@@ -197,6 +222,7 @@ const Login = (props) => {
   };
 
   const handleLogin = () => {
+    upResume();
     const tmpErrorHandler = {};
     Object.keys(inputErrorHandler).forEach((obj) => {
       if (inputErrorHandler[obj].required && inputErrorHandler[obj].untouched) {
@@ -422,7 +448,7 @@ const Login = (props) => {
                 }
               />
             </Grid>
-            <Grid item>
+            {/* <Grid item>
               <FileUploadInput
                 className={classes.inputBox}
                 label="Resume (.pdf)"
@@ -441,7 +467,7 @@ const Login = (props) => {
                 handleInput={handleInput}
                 identifier={"profile"}
               />
-            </Grid>
+            </Grid> */}
           </>
         ) : (
           <>

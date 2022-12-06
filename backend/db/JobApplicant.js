@@ -46,6 +46,16 @@ let schema = new mongoose.Schema(
     profile: {
       type: String,
     },
+
+    sop: {
+      type: String,
+      validate: {
+        validator: function (v) {
+          return v.split(" ").filter((ele) => ele != "").length <= 250;
+        },
+        msg: "Mục đích ứng tuyển không được lớn hơn 250 từ",
+      },
+    }
   },
   { collation: { locale: "en" } }
 );

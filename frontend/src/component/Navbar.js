@@ -80,7 +80,7 @@ const Navbar = (props) => {
               >
                 Ứng tuyển
               </Button>
-              <Button color="inherit" onClick={() => handleClick("/blogs")}>
+              <Button color="inherit" onClick={() => handleClick("/myblogs")}>
                 Diễn đàn
               </Button>
               <Button color="inherit" onClick={() => handleClick("/profile")}>

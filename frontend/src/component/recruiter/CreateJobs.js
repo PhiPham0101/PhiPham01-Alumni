@@ -12,9 +12,7 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import ChipInput from "material-ui-chip-input";
-
 import { SetPopupContext } from "../../App";
-
 import apiList from "../../lib/apiList";
 
 const useStyles = makeStyles((theme) => ({
@@ -342,19 +340,6 @@ const CreateJobs = (props) => {
                     fullWidth
                   />
                 </Grid>
-                {/* <Grid item>
-                  <TextField
-                    label="Số lượng tối đa vị trí ứng tuyển"
-                    type="number"
-                    variant="outlined"
-                    value={jobDetails.maxApplicants}
-                    onChange={(event) => {
-                      handleInput("maxApplicants", event.target.value);
-                    }}
-                    InputProps={{ inputProps: { min: 1 } }}
-                    fullWidth
-                  />
-                </Grid> */}
                 <Grid item>
                   <TextField
                     label="Số lượng cần tuyển"

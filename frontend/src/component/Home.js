@@ -13,12 +13,8 @@ import {
   Modal,
   Slider,
   FormControlLabel,
-  FormGroup,
-  MenuItem,
   Checkbox,
 } from "@material-ui/core";
-import Rating from "@material-ui/lab/Rating";
-import Pagination from "@material-ui/lab/Pagination";
 import axios from "axios";
 import SearchIcon from "@material-ui/icons/Search";
 import FilterListIcon from "@material-ui/icons/FilterList";
@@ -106,13 +102,14 @@ const JobTile = (props) => {
       <Grid container>
         <Grid container item xs={9} spacing={1} direction="column">
           <Grid item>
-            <Typography variant="h5">{job.title}</Typography>
+            <Typography variant="h5" style={{ color: "blue" }}>{job.title}</Typography>
           </Grid>
-          <Grid item>Tên công ty: {job.companyname}</Grid>
-          <Grid item>Link website tuyển dụng: {job.linkwebsite}</Grid>
-          <Grid item>Nội dung: {job.postname}</Grid>
-          <Grid item>Loại công việc: {job.jobType}</Grid>
-          <Grid item>Lương: {job.salary}000 (VNĐ)</Grid>
+          <Grid item>- Tên công ty: {job.companyname}</Grid>
+          <Grid item>- Link website tuyển dụng: {job.linkwebsite}</Grid>
+          <Grid item>- Nội dung: {job.postname}</Grid>
+          <Grid item>- Loại công việc: {job.jobType}</Grid>
+          <Grid item>- Lương: {job.salary}000 (VNĐ)</Grid>
+          <Grid item>- Số lượng cần tuyển: {job.maxPositions}</Grid>
           <Grid item>Người đăng: {job.recruiter.name}</Grid>
           <Grid item>Thời hạn đăng ký: {deadline}</Grid>
           <Grid item>Thông tin liên hệ: {job.info}</Grid>
@@ -483,11 +480,11 @@ const Home = (props) => {
         );
       })
       .catch((err) => {
-        console.log(err.response.data);
+        //console.log(err.response.data);
         setPopup({
           open: true,
           severity: "error",
-          message: "Error",
+          message: err.response.data.message,
         });
       });
   };

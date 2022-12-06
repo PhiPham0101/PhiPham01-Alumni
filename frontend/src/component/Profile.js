@@ -4,7 +4,6 @@ import {
   Button,
   Grid,
   Typography,
-  Modal,
   Paper,
   makeStyles,
   TextField,
@@ -107,6 +106,8 @@ const MultifieldInput = (props) => {
 const Profile = (props) => {
   const classes = useStyles();
   const setPopup = useContext(SetPopupContext);
+  const [resume, setResume] = useState();
+  const [image, setImage] = useState();
   const [userData, setUserData] = useState();
   const [open, setOpen] = useState(false);
 
@@ -127,6 +128,8 @@ const Profile = (props) => {
   ]);
 
   const handleInput = (key, value) => {
+    upResume();
+    upImage();
     setProfileDetails({
       ...profileDetails,
       [key]: value,
@@ -167,6 +170,56 @@ const Profile = (props) => {
       });
   };
 
+  const getfile = (event) => {
+    const file = event.target.files[0];
+    setProfileDetails({...profileDetails, resume: file.name});
+    file.preview = URL.createObjectURL(file);
+    setResume(file);
+  }
+  
+  const upResume = () => {
+    const cv = new FormData();
+    cv.append("fileResume",resume);
+    axios
+    .post(apiList.uploadResume, cv, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        'content-type':'multipart/form-data',
+      },
+    })
+    .then((response) => {
+      console.log(response)
+    })
+    .catch(err => {
+      console.log(err)
+    }) 
+  };
+
+  const getimage = (event) => {
+    const file = event.target.files[0];
+    setProfileDetails({...profileDetails, profile: file.name});
+    file.preview = URL.createObjectURL(file);
+    setImage(file);
+  }
+  
+  const upImage = () => {
+    const anh = new FormData();
+    anh.append("fileImage",image);
+    axios
+    .post(apiList.uploadProfileImage, anh, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        'content-type':'multipart/form-data',
+      },
+    })
+    .then((response) => {
+      console.log(response)
+    })
+    .catch(err => {
+      console.log(err)
+    }) 
+  };
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -176,6 +229,8 @@ const Profile = (props) => {
   };
 
   const handleUpdate = () => {
+    upResume();
+    upImage();
     console.log(education);
 
     let updatedDetails = {
@@ -284,6 +339,7 @@ const Profile = (props) => {
                   icon={<DescriptionIcon />}
                   uploadTo={apiList.uploadResume}
                   handleInput={handleInput}
+                  change={getfile}
                   identifier={"resume"}
                 />
               </Grid>
@@ -294,6 +350,7 @@ const Profile = (props) => {
                   icon={<FaceIcon />}
                   uploadTo={apiList.uploadProfileImage}
                   handleInput={handleInput}
+                  change={getimage}
                   identifier={"profile"}
                 />
               </Grid>

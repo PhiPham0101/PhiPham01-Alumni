@@ -232,6 +232,7 @@ router.get("/jobs", jwtAuth, (req, res) => {
   console.log(arr);
 
   Job.aggregate(arr)
+    .sort({dateOfPosting: -1})
     .then((posts) => {
       if (posts == null) {
         res.status(404).json({
@@ -240,6 +241,7 @@ router.get("/jobs", jwtAuth, (req, res) => {
         return;
       }
       res.json(posts);
+      
     })
     .catch((err) => {
       res.status(400).json(err);
@@ -786,7 +788,7 @@ router.put("/applications/:id", jwtAuth, (req, res) => {
                           )
                             .then(() => {
                               res.json({
-                                message: `Application ${status} successfully`,
+                                message: `Hồ sơ ứng tuyển đã được duyệt thành công`,
                               });
                             })
                             .catch((err) => {
@@ -794,7 +796,7 @@ router.put("/applications/:id", jwtAuth, (req, res) => {
                             });
                         } else {
                           res.json({
-                            message: `Application ${status} successfully`,
+                            message: `Hồ sơ ứng tuyển đã được xóa`,
                           });
                         }
                       })
@@ -807,7 +809,7 @@ router.put("/applications/:id", jwtAuth, (req, res) => {
                   });
               } else {
                 res.status(400).json({
-                  message: "Tất cả các vị trí cho công việc này đã được lấp đầy",
+                  message: "LỖI!",
                 });
               }
             });
@@ -840,11 +842,11 @@ router.put("/applications/:id", jwtAuth, (req, res) => {
           }
           if (status === "finished") {
             res.json({
-              message: `Job ${status} successfully`,
+              message: `Hồ sơ ứng tuyển đã được xóa khỏi danh sách ứng viên`,
             });
           } else {
             res.json({
-              message: `Application ${status} successfully`,
+              message: `Hồ sơ ứng tuyển đã được xóa khỏi danh sách ứng viên`,
             });
           }
         })
@@ -870,7 +872,7 @@ router.put("/applications/:id", jwtAuth, (req, res) => {
         .then((tmp) => {
           console.log(tmp);
           res.json({
-            message: `Application ${status} successfully`,
+            message: `Hồ sơ đã bị hủy`,
           });
         })
         .catch((err) => {
@@ -936,9 +938,9 @@ router.get("/applicants", jwtAuth, (req, res) => {
     if (req.query.desc) {
       if (Array.isArray(req.query.desc)) {
         req.query.desc.map((key) => {
-          sortParams = {
+          sortParams = {  
             ...sortParams,
-            [key]: -1,
+            [key]: -1,  
           };
         });
       } else {
@@ -974,7 +976,7 @@ router.get("/applicants", jwtAuth, (req, res) => {
       .then((applications) => {
         if (applications.length === 0) {
           res.status(404).json({
-            message: "No applicants found",
+            message: "Không tìm thấy ứng viên nào trong danh sách!",
           });
           return;
         }
@@ -1098,6 +1100,7 @@ router.get("/blogs", jwtAuth, (req, res) => {
   console.log(arr);
 
   Blog.aggregate(arr)
+    .sort({dateOfPosting: -1})
     .then((posts) => {
       if (posts == null) {
         res.status(404).json({
@@ -1150,6 +1153,9 @@ router.put("/blogs/:id", jwtAuth, (req, res) => {
       return;
     }
     const data = req.body;
+    if (data.title) {
+      blog.title = data.title;
+    }
     if (data.postname) {
       blog.postname = data.postname;
     }
@@ -1162,6 +1168,7 @@ router.put("/blogs/:id", jwtAuth, (req, res) => {
       })
       .catch((err) => {
         res.status(400).json(err);
+        message: err;
       });
   })
   .catch((err) => {

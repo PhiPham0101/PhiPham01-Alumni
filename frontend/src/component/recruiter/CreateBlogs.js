@@ -1,7 +1,4 @@
 import React from "react";
-import { useSelector, useDispatch } from 'react-redux';
-import { RootStore, IBlog, IUser } from '../utils/TypeScript';
-
 import { useContext, useEffect, useState } from "react";
 import {
   Button,
@@ -12,12 +9,10 @@ import {
   makeStyles,
   TextField,
   MenuItem,
+  Box,
 } from "@material-ui/core";
 import axios from "axios";
-import ChipInput from "material-ui-chip-input";
-
 import { SetPopupContext } from "../../App";
-
 import apiList from "../../lib/apiList";
 
 const useStyles = makeStyles((theme) => ({
@@ -36,16 +31,12 @@ const useStyles = makeStyles((theme) => ({
 const CreateBlogs = (props) => {
   const classes = useStyles();
   const setPopup = useContext(SetPopupContext);
-
+  const [image, setImage] = useState();
   const [blogDetails, setBlogDetails] = useState({
     title: "",
     postname: "",
-    descrption: "",
-    thumbnail: "",
+    avatar: null,
   });
-
-  //const { auth } = useSelector((state: RootStore) => state);
-  const dispatch = useDispatch();
 
   const handleInput = (key, value) => {
     setBlogDetails({
@@ -86,8 +77,35 @@ const CreateBlogs = (props) => {
     });
   };
 
+  const getfile = (event) => {
+    const file = event.target.files[0];
+    setBlogDetails({...blogDetails, avatar: file.name});
+    file.preview = URL.createObjectURL(file);
+    setImage(file);
+  }
+
+  const upImage = () => {
+    const anh = new FormData();
+    anh.append("fileImage",image);
+    axios
+    .post(apiList.uploadProfileImage, anh, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        'content-type':'multipart/form-data',
+      },
+    })
+    .then((response) => {
+      console.log(response)
+    })
+    .catch(err => {
+      console.log(err)
+    }) 
+  };
+
   const handleUpdate = () => {
+    upImage();
     console.log(blogDetails);
+
     axios
       .post(apiList.blogs, blogDetails, {
         headers: {
@@ -110,11 +128,17 @@ const CreateBlogs = (props) => {
         setPopup({
           open: true,
           severity: "error",
-          message: err.response.data.message,
+          message: 'Lỗi',
         });
         console.log(err.response);
       });
   };
+
+  React.useEffect(() => {
+    return () => {
+      image && URL.revokeObjectURL(image.preview);
+    }
+  },[image])
 
   return (
     <>
@@ -185,25 +209,15 @@ const CreateBlogs = (props) => {
                     }}
                   />
                 </Grid>
-                <Grid item>
-                  <TextField
-                    label="Hình ảnh"
-                    value={blogDetails.avatar}
-                    onChange={(event) =>
-                      handleInput("avatar", event.target.value)
-                    }
-                    error={inputErrorHandler.avatar.error}
-                    helperText={inputErrorHandler.avatar.message}
-                    onBlur={(event) => {
-                      if (event.target.value === "") {
-                        handleInputError("avatar", true, "Vui lòng nhập tên công ty!");
-                      } else {
-                        handleInputError("avatar", false, "");
-                      }
-                    }}
-                    variant="outlined"
-                    fullWidth
-                  />
+                <Grid>
+                  <Box width={'100%'}   display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+                      <img src={image && image.preview} alt='' width={500} height={500} style={{objectFit:'contain',marginBottom:10}} />
+                  <Button variant="contained" component="label" sx={{marginTop:2}}>
+                      Chọn ảnh
+                  <input hidden accept="image/*" onChange={getfile} type="file"/>
+                  </Button>
+                  </Box>
+                 
                 </Grid>
               </Grid>
               <Button
