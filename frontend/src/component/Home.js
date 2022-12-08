@@ -18,8 +18,6 @@ import {
 import axios from "axios";
 import SearchIcon from "@material-ui/icons/Search";
 import FilterListIcon from "@material-ui/icons/FilterList";
-import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
-import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 
 import { SetPopupContext } from "../App";
 

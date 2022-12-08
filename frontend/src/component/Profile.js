@@ -108,7 +108,7 @@ const Profile = (props) => {
   const setPopup = useContext(SetPopupContext);
   const [resume, setResume] = useState();
   const [image, setImage] = useState();
-  const [userData, setUserData] = useState();
+  //const [userData, setUserData] = useState();
   const [open, setOpen] = useState(false);
 
   const [profileDetails, setProfileDetails] = useState({

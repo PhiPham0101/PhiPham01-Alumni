@@ -268,47 +268,6 @@ const ApplicationTile = (props) => {
   const [sop, setSop] = useState("");
   const [sopcancel, setSopcancel] = useState("");
 
-  // const handleClose = () => {
-  //   setOpen(false);
-  //   setSop("");
-  //   setSopcancel("");
-  // };
-
-  // const handleApply = () => {
-  //   console.log(job._id);
-  //   console.log(sop);
-  //   axios
-  //     .post(
-  //       `${apiList.jobs}/${job._id}/applications`,
-  //       {
-  //         sop: sop,
-  //         sopcancel: sop,
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         },
-  //       }
-  //     )
-  //     .then((response) => {
-  //       setPopup({
-  //         open: true,
-  //         severity: "success",
-  //         message: response.data.message,
-  //       });
-  //       handleClose();
-  //     })
-  //     .catch((err) => {
-  //       console.log(err.response);
-  //       setPopup({
-  //         open: true,
-  //         severity: "error",
-  //         message: err.response.data.message,
-  //       });
-  //       handleClose();
-  //     });
-  // };
-
   const handleCloseEndJob = () => {
     setOpenEndJob(false);
   };
