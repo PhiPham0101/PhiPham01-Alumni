@@ -41,9 +41,23 @@ const Welcome = (props) => {
             alignItems: "center", 
             display: "flex",
             flexDirection: "column",
-            color: "#33CCFF"}} 
+            color: "darkorange"}} 
           variant="h1">
           Chào mừng đến Alumni IT
+        </Typography>
+        <Typography></Typography>
+        <Typography></Typography>
+        <Typography 
+          style={{ 
+            margin: "0",
+            padding: "0",
+            justifyContent: "center", 
+            alignItems: "center", 
+            display: "flex",
+            flexDirection: "column",
+            color: "#33CCFF"}} 
+          variant="h3">
+          (Ứng dụng web dành cho cựu sinh viên)
         </Typography>
         
       </Grid>

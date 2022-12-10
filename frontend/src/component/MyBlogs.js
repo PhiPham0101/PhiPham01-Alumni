@@ -11,13 +11,16 @@ import {
   Paper,
   TextField,
   Typography,
+
 } from "@material-ui/core";
 import axios from "axios";
 import SearchIcon from "@material-ui/icons/Search";
 
 import { SetPopupContext } from "../App";
 import apiList from "../lib/apiList";
+
 import { userType } from "../lib/isAuth";
+import { useParams, Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -85,14 +88,15 @@ const BlogTile = (props) => {
       .catch((err) => {
         setPopup({
           open: true,
-          //severity: "error",
-          message: "Xóa bài viết thành công",
+          severity: "error",
+          message: "Bạn không có quyền xóa bài viết",
         });
         handleClose();
-        window.location.reload();
+        // window.location.reload();
       });
   };
 
+  console.log(blogDetails)
   const handleBlogUpdate = () => {
     axios
       .put(`${apiList.blogs}/${blog._id}`, blogDetails, {
@@ -112,11 +116,11 @@ const BlogTile = (props) => {
       .catch((err) => {
         setPopup({
           open: true,
-          //severity: "error",
-          message: "Cập nhật bài viết thành công",
+          severity: "error",
+          message: "Bạn không có quyền cập nhật bài viết",
         });
         handleCloseUpdate();
-        window.location.reload();
+        console.log(err)
       });
   };
 
@@ -134,12 +138,33 @@ const BlogTile = (props) => {
               {blog.avatar && <img src={'http://localhost:4444/image/' + blog.avatar} alt='anh' width={'60%'} style={{ minWidth: 300, maxHeight: '100%' }} />}
             </Box>
           </Grid>
-          <Grid item>Nội dung: {blog.postname}</Grid>
+
+          <Box width={'100%'} display={'flex'} paddingLeft={1} >
+            <Grid item xs={2}>Nội dung: </Grid>
+            <Grid item>{blog.postname} </Grid>
+          </Box>
           <Grid item>Người đăng: {blog.recruiter.name}</Grid>
           <Grid item>Ngày đăng bài: {postedOn.toLocaleDateString()}</Grid>
         </Grid>
         <Grid item>
-          <Box width={'100%'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'} style={{objectFit:'contain',marginTop:10}}>
+          <Box width={'100%'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'} style={{ color: "#00FF00", objectFit: 'contain', marginTop: 10 }}>
+            <Link to={`/privateblog/${blog._id}`}>
+              <Button
+                variant="contained"
+                style={{ backgroundColor: "#00FF99" }}
+                className={classes.statusBlock}
+                // onClick={() => {
+                //   setIdBlog(blog._id);
+                // }}
+                disabled={userType() === "applicant"}
+              >
+                Xem bài đăng
+              </Button>
+            </Link>
+          </Box>
+        </Grid>
+        <Grid item>
+          <Box width={'100%'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'} style={{ objectFit: 'contain', marginTop: 10, marginLeft: 5 }}>
             <Button
               variant="contained"
               className={classes.statusBlock}
@@ -153,7 +178,7 @@ const BlogTile = (props) => {
           </Box>
         </Grid>
         <Grid item>
-          <Box width={'100%'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'} style={{objectFit:'contain',marginTop:10, marginLeft:5}}>
+          <Box width={'100%'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'} style={{ objectFit: 'contain', marginTop: 10, marginLeft: 5 }}>
             <Button
               variant="contained"
               color="secondary"
@@ -212,6 +237,7 @@ const BlogTile = (props) => {
         open={openUpdate}
         onClose={handleCloseUpdate}
         className={classes.popupDialog}
+        reloadApi={getData}
       >
         <Paper
           style={{
@@ -261,7 +287,7 @@ const BlogTile = (props) => {
                   if (
                     event.target.value.split(" ").filter(function (n) {
                       return n != "";
-                    }).length <= 500
+                    }).length <= 1000
                   ) {
                     handleInput("postname", event.target.value);
                   }
@@ -322,6 +348,7 @@ const Blogs = (props) => {
     if (queryString !== "") {
       address = `${address}?${queryString}`;
     }
+    console.log(address)
     axios
       .get(address, {
         headers: {
@@ -343,6 +370,10 @@ const Blogs = (props) => {
         });
       });
   };
+
+
+  const params = useParams();
+  console.log(params.privateblog);
 
   return (
     <>
@@ -401,7 +432,7 @@ const Blogs = (props) => {
 
           {blogs.length > 0 ? (
             blogs.map((blog) => {
-              return <BlogTile blog={blog} />;
+              return <BlogTile blog={blog} getData={getData} />;
             })
           ) : (
             <Typography variant="h5" style={{ textAlign: "center" }}>

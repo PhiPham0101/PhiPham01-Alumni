@@ -16,6 +16,7 @@ import CreateJobs from "./component/recruiter/CreateJobs";
 import CreateBlogs from "./component/recruiter/CreateBlogs";
 import MyJobs from "./component/recruiter/MyJobs";
 import MyBlogs from "./component/MyBlogs";
+import ViewBlog from "./component/ViewBlog";
 import JobApplications from "./component/recruiter/JobApplications";
 import AcceptedApplicants from "./component/recruiter/AcceptedApplicants";
 import RecruiterProfile from "./component/recruiter/Profile";
@@ -92,6 +93,12 @@ function App() {
               </Route>
               <Route exact path="/myblogs">
                 <MyBlogs />
+              </Route>
+              <Route path="/privateblog">
+                    <Route path="/privateblog/:id">
+                      <ViewBlog />
+                    </Route>
+
               </Route>
               <Route exact path="/job/applications/:jobId">
                 <JobApplications />

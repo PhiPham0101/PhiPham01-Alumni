@@ -6,7 +6,6 @@ import {
   Box,
   useTheme,
 } from "@material-ui/core";
-import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../lib/theme";
 //import { mockDataTeam } from "../../db/user";
@@ -71,6 +70,11 @@ const Admin = (props) => {
   //     email: Admin.user.email,
   //   }
   // ];
+  // const [profileDetails, setProfileDetails] = useState({
+  //   name: "",
+  //   email: "",
+  // });
+
   const columns = [
     {field: "id", headerName: "ID" },
     {
@@ -121,16 +125,6 @@ const Admin = (props) => {
 
   return (
     <>
-      {/* <Box m="20px">
-        <Header title="Thành viên" subtitle="Quản lý thành viên" />
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          checkboxSelection
-        />
-      </Box> */}
       <Box
         m="40px 0 0 0"
         height="600px"
