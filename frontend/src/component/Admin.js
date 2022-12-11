@@ -1,163 +1,131 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
 import {
-  makeStyles,
   Typography,
   Box,
-  useTheme,
+  Button
 } from "@material-ui/core";
-import { DataGrid } from "@mui/x-data-grid";
-import { tokens } from "../lib/theme";
-//import { mockDataTeam } from "../../db/user";
-// import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-// import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
-// import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
-//import { SetPopupContext } from "../App";
+
+import { styled } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 import apiList from "../lib/apiList";
-//import { userType } from "../lib/isAuth";
-
-const useStyles = makeStyles((theme) => ({
-  body: {
-    height: "inherit",
-  },
-  button: {
-    width: "100%",
-    height: "100%",
-  },
-  jobTileOuter: {
-    padding: "30px",
-    margin: "20px 0",
-    boxSizing: "border-box",
-    width: "100%",
-  },
-  popupDialog: {
-    height: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-}));
-
-const Header = ({ title, subtitle }) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  return (
-    <Box mb="30px">
-      <Typography
-        variant="h2"
-        color={colors.grey[100]}
-        fontWeight="bold"
-        sx={{ m: "0 0 5px 0" }}
-      >
-        {title}
-      </Typography>
-      <Typography variant="h5" color={colors.greenAccent[400]}>
-        {subtitle}
-      </Typography>
-    </Box>
-  );
-};
+import axios from "axios";
 
 const Admin = (props) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const { Admin } = props;
-  // const rows = [
-  //   {
-  //     id: Admin.user._id,
-  //     name: Admin.user.name,
-  //     email: Admin.user.email,
-  //   }
-  // ];
-  // const [profileDetails, setProfileDetails] = useState({
-  //   name: "",
-  //   email: "",
-  // });
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
 
-  const columns = [
-    {field: "id", headerName: "ID" },
-    {
-      field: "name",
-      headerName: "Họ và tên",
-      flex: 1,
-      cellClassName: "name-column--cell",
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
     },
-    {
-      field: "email",
-      headerName: "Email",
-      flex: 1,
+    // hide last border
+    '&:last-child td, &:last-child th': {
+      border: 0,
     },
-    {
-      field: "accessLevel",
-      headerName: "Quyền truy cập",
-      flex: 1,
-      renderCell: ({ row: { access } }) => {
-        return (
-          <Box
-            width="100%"
-            m="0 auto"
-            p="5px"
-            display="flex"
-            justifyContent="center"
-            backgroundColor={
-              access === "admin"
-                ? colors.greenAccent[600]
-                : access === "recruiter"
-                ? colors.greenAccent[700]
-                : colors.greenAccent[700]
-            }
-            borderRadius="4px"
-          >
-            {access === "admin"}
-            {access === "recruiter"}
-            {access === "student"}
-            <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
-              {access}
-            </Typography>
-          </Box>
-        );
-      },
-    },
+  }));
+  const [isBlock, setIsBlock] = useState()
+  const handelBolck = async (idUser) => {
+    try {
+      const result = await axios.post(apiList.blockUser, { idUser })
+      const newList = list.map((item)=>{
+        return item.userId === idUser ? {...item, status: !item.status} : {...item} 
+      })
+      setList(newList)
+      setIsBlock(result.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  function createData(name, calories, fat, carbs, protein) {
+    return { name, calories, fat, carbs, protein };
+  }
+
+  const [list, setList] = useState([]);
+  useEffect(() => {
+    axios
+      .get(apiList.RecruiterInfo, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        for (var item of response.data) {
+          console.log(item.userId);
+        }
+        setList(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+  }, [])
+
+  const rows = [
+    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+    createData('Eclair', 262, 16.0, 24, 6.0),
+    createData('Cupcake', 305, 3.7, 67, 4.3),
+    createData('Gingerbread', 356, 16.0, 49, 3.9),
   ];
 
 
 
   return (
-    <>
-      <Box
-        m="40px 0 0 0"
-        height="600px"
-        width="1000px"
-        sx={{
-          "& .MuiDataGrid-root": {
-            border: "none",
-          },
-          "& .MuiDataGrid-cell": {
-            borderBottom: "none",
-          },
-          "& .name-column--cell": {
-            color: colors.greenAccent[300],
-          },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.grey[700],
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
-          },
-          "& .MuiDataGrid-footerContainer": {
-            borderTop: "none",
-            backgroundColor: colors.grey[700],
-          },
-          "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[200]} !important`,
-          },
-        }}
-      >
-        <DataGrid checkboxSelection rows={apiList} columns={columns} />
+    <Box width={'100%'} height={'100%'} border={'1px solid black'} display={'flex'} flexDirection={'column'}
+      justifyContent={'center'} alignItems={'center'}
+    >
+
+      <Typography variant="h5">Danh sách cựu sinh viên</Typography>
+      <Box width={'70%'} height={'100%'}>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Họ và Tên</StyledTableCell>
+                <StyledTableCell align="right">Khóa</StyledTableCell>
+                <StyledTableCell align="right">số điện thoại</StyledTableCell>
+                <StyledTableCell align="right">quyền</StyledTableCell>
+                <StyledTableCell align="right">trạng thái</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {list.length !== 0 ?
+                list.map((row, index) => (
+                  <StyledTableRow key={index}>
+                    <StyledTableCell component="th" scope="row">
+                      {row.name}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">{row.course}</StyledTableCell>
+                    <StyledTableCell align="right">{row.contactNumber}</StyledTableCell>
+                    <StyledTableCell align="right">{row.is_admin == true ? "admin" : "alumni"}</StyledTableCell>
+                    <StyledTableCell align="right">
+                      <Button style={{ backgroundColor: "#f97474", marginRight: "5px" }} variant="contained"
+                        onClick={() => handelBolck(row.userId)}
+                      >{row.status == true ? 'Khóa' : 'Mở'}</Button>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                )) : <div></div>}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Box>
-    </>
+    </Box>
   );
 };
 

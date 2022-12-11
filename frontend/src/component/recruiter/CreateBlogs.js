@@ -128,7 +128,7 @@ const CreateBlogs = (props) => {
         setPopup({
           open: true,
           severity: "error",
-          message: 'Lỗi',
+          message: err.response.data.message  ,
         });
         console.log(err.response);
       });
@@ -210,7 +210,7 @@ const CreateBlogs = (props) => {
                   />
                 </Grid>
                 <Grid>
-                  <Box width={'100%'}   display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+                  <Box width={'100%'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
                       <img src={image && image.preview} alt='' width={500} height={500} style={{objectFit:'contain',marginBottom:10}} />
                   <Button variant="contained" component="label" sx={{marginTop:2}}>
                       Chọn ảnh

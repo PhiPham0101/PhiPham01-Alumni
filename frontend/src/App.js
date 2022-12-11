@@ -6,6 +6,7 @@ import { Grid, makeStyles } from "@material-ui/core";
 import Welcome, { ErrorPage } from "./component/Welcome";
 import Navbar from "./component/Navbar";
 import Login from "./component/Login";
+import LoginAdmin from "./component/LoginAdmin";
 import Logout from "./component/Logout";
 import Signup from "./component/Signup";
 import Home from "./component/Home";
@@ -60,6 +61,7 @@ function App() {
               <Route exact path="/login">
                 <Login />
               </Route>
+              
               <Route exact path="/signup">
                 <Signup />
               </Route>

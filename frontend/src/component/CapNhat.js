@@ -17,7 +17,7 @@ import apiList from "../lib/apiList";
 import { SetPopupContext } from "../App";
 
 function CapNhat(props) {
-    const [openUpdate, setOpenUpdate] = useState(false);
+    // const [openUpdate, setOpenUpdate] = useState(false);
     const setPopup = useContext(SetPopupContext);
 
     const [blogs, setBlogs] = useState();
@@ -28,9 +28,9 @@ function CapNhat(props) {
         });
     };
     console.log(blogs);
-    const handleCloseUpdate = () => {
-        setOpenUpdate(false);
-      };
+    // const handleCloseUpdate = () => {
+    //     setOpenUpdate(false);
+    //   };
 
     const handleUpdate = () => {
         axios

@@ -22,4 +22,4 @@ let schema = new mongoose.Schema(
     { collation: { locale: "en" } }
 );
 
-module.exports = mongoose.model("comments", schema);
+module.exports = mongoose.model("binhluans", schema);

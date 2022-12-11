@@ -16,6 +16,9 @@ let schema = new mongoose.Schema(
     course: {
       type: String,
     },
+    status:{
+      type: Boolean,
+    },
     contactNumber: {
       type: String,
       validate: {
@@ -35,5 +38,4 @@ let schema = new mongoose.Schema(
   },
   { collation: { locale: "en" } }
 );
-
 module.exports = mongoose.model("RecruiterInfo", schema);

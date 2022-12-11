@@ -8,12 +8,15 @@ let schema = new mongoose.Schema(
       },
     title: {
       type: String,
+      required: true,
     },
     postname: {
       type: String,
+      required: true,
     },
     avatar: {
       type: String,
+      required: true,
     },
     dateOfPosting: {
       type: Date,

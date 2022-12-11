@@ -9,7 +9,8 @@ import {
   Paper,
 } from "@material-ui/core";
 import axios from "axios";
-import { Redirect } from "react-router-dom";
+import { Redirect, useNavigate } from "react-router-dom";
+
 
 import PasswordInput from "../lib/PasswordInput";
 import EmailInput from "../lib/EmailInput";
@@ -18,6 +19,8 @@ import { SetPopupContext } from "../App";
 import apiList from "../lib/apiList";
 import isAuth from "../lib/isAuth";
 import userIsAdmin from "../lib/isAuth";
+
+
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -32,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = (props) => {
+  
   const classes = useStyles();
   const setPopup = useContext(SetPopupContext);
 
@@ -72,6 +76,7 @@ const Login = (props) => {
   };
 
   const handleLogin = () => {
+    //const navigate = useNavigate()
     const verified = !Object.keys(inputErrorHandler).some((obj) => {
       return inputErrorHandler[obj].error;
     });
@@ -81,12 +86,16 @@ const Login = (props) => {
         .then((response) => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
-          localStorage.setItem("fff", response.data.is_admin);
+          // localStorage.setItem("fff", response.data.is_admin);
+          // localStorage.setItem("aaaa", response.data.status);
           setLoggedin(isAuth());
           console.log(response.data.is_admin);
-          if (response.data.is_admin == true){
-            setAdmin(true);
-          };
+          // if (response.data.is_admin == true){
+          //   navigate("/")
+          // };
+          // if (response.data.status == false){
+          //   console.log("Tài khoản của bạn đã bị khóa")
+          // };
           console.log(admin);
           setPopup({
             open: true,

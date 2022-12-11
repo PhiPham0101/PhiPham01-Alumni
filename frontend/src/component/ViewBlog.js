@@ -23,28 +23,30 @@ import { userType } from "../lib/isAuth";
 
 function ViewBlog(props) {
 
+  console.log('props:', props)
+
   const [blogs, setBlogs] = useState();
 
   const reloadAPI = () => {
     axios.get(`http://localhost:4444/api/blogs/${params.id}`)
-        .then(res => {
-          setBlogs(res.data)
+      .then(res => {
+        setBlogs(res.data)
 
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   const reloadAPIDelete = () => {
     axios.get(`http://localhost:4444/api/blogs/`)
-        .then(res => {
-          setBlogs(res.data)
+      .then(res => {
+        setBlogs(res.data)
 
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   const setPopup = useContext(SetPopupContext);
@@ -105,13 +107,37 @@ function ViewBlog(props) {
   }
 
 
+  const [binhluans, setBinhluans] = useState();
+  const handleInput = (key, value) => {
+    setBinhluans({
+      ...binhluans,
+      [key]: value,
+    });
+  };
+  var pathbinhluans =
+    useEffect(() => {
+      axios.get(`http://localhost:4444/api/binhluans/${params.id}`)
+        .then(res => {
+          setBinhluans(res.data)
+
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }, [params.id])
+
+  console.log(binhluans);
+  console.log(blogs)
+  console.log("aaqeqw9999");
+
+
   return (
     <Box width={'90%'} display={'flex'} alignItems={'center'} justifyContent={'center'} padding={5} >
-      <Box width={'80%'} height={'100%'} style={{backgroundColor: 'white'}} padding={3} borderRadius={3}>
+      <Box width={'80%'} height={'100%'} style={{ backgroundColor: 'white' }} padding={3} borderRadius={3}>
         {/* title */}
         <Box width={'100%'} height={'50px'} display={'flex'} alignItems={'center'} justifyContent={'center'}>
           {/* do du lieu tai day */}
-          <Typography variant='h5' style={{ color: "#0000FF" }}>{blogs && blogs.title}</Typography>
+          <Typography variant='h3' style={{ color: "#0000FF" }}>{blogs && blogs.title}</Typography>
 
         </Box>
         <Divider />
@@ -125,8 +151,8 @@ function ViewBlog(props) {
           <Box marginTop={3} width={'80%'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
             {/* size chu */}
 
-            <Typography variant='h5'>NỘI DUNG</Typography>
-            <Typography variant='h6'>{blogs && blogs.postname}</Typography>
+            <Typography variant='h5'><h3>NỘI DUNG</h3></Typography>
+            <Typography variant='h7'>{blogs && blogs.postname}</Typography>
           </Box>
           <Box marginTop={3} width={'100%'} display={'flex'} alignItems={'center'} justifyContent={'flex-end'}>
             <Button disabled={userType() === "applicant"} onClick={handleClickOpenCapnhat} style={{ color: "#808080" }}> Cập nhật</Button>
@@ -134,14 +160,26 @@ function ViewBlog(props) {
             <Button onClick={handleClickOpen} style={{ color: "#33CC33" }}> Bình luận</Button>
           </Box>
           <Box marginTop={3} width={'100%'} display={'flex'} alignItems={'center'} flexDirection={'column'}>
-                 <Box width={'80%'} marginTop={2} display={'flex'} flexDirection={'column'} border={'1px solid black'}>
-                      <Typography >le van binh</Typography>
-                      <Typography>bai viet nay hin cung hay duoc</Typography>
-                </Box>
-                <Box width={'80%'} marginTop={2} height={'50px'} border={'1px solid black'}>
+            <Box style={{ color: "#444444	" }} alignItems={'left'}><h2>Bình luận</h2></Box>
+            <Box width={'80%'} marginTop={2} display={'flex'} flexDirection={'column'} border={'1px solid black'} />
+            <Box width={'80%'} marginTop={2} display={'flex'} flexDirection={'column'} border={'1px solid black'}>
+               <Typography>
+                  {binhluans && binhluans.userId}
+              </Typography>
+              <Typography>
+                 {binhluans && binhluans._id}
+              </Typography>
+              <Typography>
+                 {binhluans && binhluans.dateOfPosting}
+              </Typography>
+              <Typography>
+                  {binhluans && binhluans.commentcontent}
+              </Typography>
+            
+            </Box>
+            {/* <Box width={'80%'} marginTop={2} height={'50px'} border={'1px solid black'}>
 
-                </Box>
-
+            </Box> */}
           </Box>
         </Box>
 
@@ -151,6 +189,9 @@ function ViewBlog(props) {
       <DanhGiadialog
         open={opendanhgia}
         handleClose={handleClose}
+        idblog= {blogs && blogs._id}
+        iduser = {blogs && blogs.userId}
+        // valueSubmit = {idblog}
       />
 
       <CapNhat

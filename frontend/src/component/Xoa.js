@@ -6,16 +6,16 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 
 import axios from "axios";
-// import { useParams, useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
+// import { useParams } from 'react-router-dom'
 import apiList from "../lib/apiList";
 import { SetPopupContext } from "../App";
+import {useHistory, useLocation} from 'react-router-dom'
 
 
 function Xoa(props) {
     const setPopup = useContext(SetPopupContext);
-    // const navigate = useNavigate()
-
+    let history = useHistory();
     const [blogs, setBlogs] = useState();
 
     const handleDelete = () => {
@@ -32,8 +32,7 @@ function Xoa(props) {
           message: response.data.message,
         });
        props.handleClose();
-      //  navigate('/myblogs')
-      //  history.push('/myblogs');
+      history.push('/myblogs')
 
       })
       .catch((err) => {
@@ -71,7 +70,7 @@ function Xoa(props) {
             onClose={props.handleClose}
             aria-labelledby="draggable-dialog-title" 
         >
-            <DialogTitle style={{ cursor: 'move'  }} id="draggable-dialog-title">
+            <DialogTitle style={{ cursor: 'move', justifyContent: "center"  }} id="draggable-dialog-title">
                 Bạn có chắc chắn xóa?
             </DialogTitle>
             <DialogActions style={{ justifyContent: "center" }}>
