@@ -87,6 +87,8 @@ router.post("/login", (req, res, next) => {
         token: token,
         type: user.type,
         is_admin: user.is_admin,
+        status: user.status,
+        iduser:user._id ,
       });
     }
   )(req, res, next);

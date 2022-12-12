@@ -423,6 +423,98 @@ router.get("/user/:id", jwtAuth, (req, res) => {
     });
 });
 
+
+router.get("/userroute/:id", (req, res) => {
+  User.findOne({ _id: req.params.id })
+    .then((userData) => {
+      if (userData === null) {
+        res.status(404).json({
+          message: "Người dùng không tồn tại",
+        });
+        return;
+      }
+
+      if (userData.type === "recruiter") {    
+        Recruiter.findOne({ userId: userData._id })
+          .then((recruiter) => {
+            if (recruiter === null) {
+              res.status(404).json({
+                message: "Người dùng không tồn tại",
+              });
+              return;
+            }
+            res.json(recruiter);
+          })
+          .catch((err) => {
+            res.status(400).json(err);
+          });
+      } else {
+        JobApplicant.findOne({ userId: userData._id })
+          .then((jobApplicant) => {
+            if (jobApplicant === null) {
+              res.status(404).json({
+                message: "Người dùng không tồn tại",
+              });
+              return;
+            }
+            res.json(jobApplicant);
+          })
+          .catch((err) => {
+            res.status(400).json(err);
+          });
+      }
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
+
+router.get("/userpublic/:id", (req, res) => {
+  User.findOne({ _id: req.params.id })
+    .then((userData) => {
+      if (userData === null) {
+        res.status(404).json({
+          message: "Người dùng không tồn tại",
+        });
+        return;
+      }
+
+      if (userData.type === "recruiter") {
+        Recruiter.findOne({ userId: userData._id })
+          .then((recruiter) => {
+            if (recruiter === null) {
+              res.status(404).json({
+                message: "Người dùng không tồn tại",
+              });
+              return;
+            }
+            res.json(recruiter);
+          })
+          .catch((err) => {
+            res.status(400).json(err);
+          });
+      } else {
+        JobApplicant.findOne({ userId: userData._id })
+          .then((jobApplicant) => {
+            if (jobApplicant === null) {
+              res.status(404).json({
+                message: "Người dùng không tồn tại",
+              });
+              return;
+            }
+            res.json(jobApplicant);
+          })
+          .catch((err) => {
+            res.status(400).json(err);
+          });
+      }
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
 // update user details
 router.put("/user", jwtAuth, (req, res) => {
   const user = req.user;
@@ -1285,25 +1377,25 @@ router.delete("/blogs/:id", jwtAuth, (req, res) => {
 
 //////////////////////////////////////////////////
 //add comment
-// router.post("/comments", jwtAuth, (req, res) => {
-//   const user = req.user;
+router.post("/comments", jwtAuth, (req, res) => {
+  const user = req.user;
 
-//   const data = req.body;
+  const data = req.body;
 
-//   let comment = new Comment({
-//     userId: user._id,
-//     commentcontent: data.commentcontent,
-//   });
+  let comment = new Comment({
+    userId: user._id,
+    commentcontent: data.commentcontent,
+  });
 
-//   comment
-//     .save()
-//     .then(() => {
-//       res.json({ message: "Thêm bài viết thành công" });
-//     })
-//     .catch((err) => {
-//       res.status(400).json({ message: "Vui lòng nhập đầy đủ thông tin bắc buộc!" });
-//     });
-// });
+  comment
+    .save()
+    .then(() => {
+      res.json({ message: "Thêm bài viết thành công" });
+    })
+    .catch((err) => {
+      res.status(400).json({ message: "Vui lòng nhập đầy đủ thông tin bắc buộc!" });
+    });
+});
 
 // router.get("/comments", jwtAuth, (req, res) => {
 //   let user = req.user;
@@ -1398,95 +1490,95 @@ router.delete("/blogs/:id", jwtAuth, (req, res) => {
 //     });
 // });
 
-// // to get info about a particular blog
-// router.get("/blogs", jwtAuth, (req, res) => {
-//   Blog.findOne({ _id: req.params.id })
-//     .then((blog) => {
-//       if (blog == null) {
-//         res.status(400).json({
-//           message: "Bài viết không tồn tại",
-//         });
-//         return;
-//       }
-//       res.json(blog);
-//     })
-//     .catch((err) => {
-//       res.status(400).json(err);
-//     });
-// });
+// to get info about a particular blog
+router.get("/blogs", jwtAuth, (req, res) => {
+  Blog.findOne({ _id: req.params.id })
+    .then((blog) => {
+      if (blog == null) {
+        res.status(400).json({
+          message: "Bài viết không tồn tại",
+        });
+        return;
+      }
+      res.json(blog);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
 
 // //update blog
-// router.put("/blogs/:id", jwtAuth, (req, res) => {
-//   const user = req.user;
-//   if (user.type != "recruiter") {
-//     res.status(401).json({
-//       message: "Bạn không có quyền cập nhật bài viết",
-//     });
-//     return;
-//   }
-//   Blog.findOne({
-//     _id: req.params.id,
-//     userId: user.id,
-//   })
-//     .then((blog) => {
-//       if (blog == null) {
-//         res.status(404).json({
-//           message: "Bài viết không tồn tại",
-//         });
-//         return;
-//       }
-//       const data = req.body;
-//       if (data.title) {
-//         blog.title = data.title;
-//       }
-//       if (data.postname) {
-//         blog.postname = data.postname;
-//       }
-//       blog
-//         .save()
-//         .then(() => {
-//           res.json({
-//             message: "Cập nhật bài viết thành công",
-//           });
-//         })
-//         .catch((err) => {
-//           res.status(400).json(err);
-//         });
-//     })
-//     .catch((err) => {
-//       res.status(400).json(err);
-//     });
+router.put("/blogs/:id", jwtAuth, (req, res) => {
+  const user = req.user;
+  if (user.type != "recruiter") {
+    res.status(401).json({
+      message: "Bạn không có quyền cập nhật bài viết",
+    });
+    return;
+  }
+  Blog.findOne({
+    _id: req.params.id,
+    userId: user.id,
+  })
+    .then((blog) => {
+      if (blog == null) {
+        res.status(404).json({
+          message: "Bài viết không tồn tại",
+        });
+        return;
+      }
+      const data = req.body;
+      if (data.title) {
+        blog.title = data.title;
+      }
+      if (data.postname) {
+        blog.postname = data.postname;
+      }
+      blog
+        .save()
+        .then(() => {
+          res.json({
+            message: "Cập nhật bài viết thành công",
+          });
+        })
+        .catch((err) => {
+          res.status(400).json(err);
+        });
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 
-// });
+});
 
-// // to delete a blog
-// router.delete("/blogs/:id", jwtAuth, (req, res) => {
-//   const user = req.user;
-//   if (user.type != "recruiter") {
-//     res.status(401).json({
-//       message: "Bạn không có quyền xóa bài đăng",
-//     });
-//     return;
-//   }
-//   Blog.findOneAndDelete({
-//     _id: req.params.id,
-//     userId: user.id,
-//   })
-//     .then((blog) => {
-//       if (blog === null) {
-//         res.status(401).json({
-//           message: "Bạn không có quyền xóa bài đăng",
-//         });
-//         return;
-//       }
-//       res.json({
-//         message: "Xóa bài đăng thành công",
-//       });
-//     })
-//     .catch((err) => {
-//       res.status(400).json(err);
-//     });
-// });
+// to delete a blog
+router.delete("/blogs/:id", jwtAuth, (req, res) => {
+  const user = req.user;
+  if (user.type != "recruiter") {
+    res.status(401).json({
+      message: "Bạn không có quyền xóa bài đăng",
+    });
+    return;
+  }
+  Blog.findOneAndDelete({
+    _id: req.params.id,
+    userId: user.id,
+  })
+    .then((blog) => {
+      if (blog === null) {
+        res.status(401).json({
+          message: "Bạn không có quyền xóa bài đăng",
+        });
+        return;
+      }
+      res.json({
+        message: "Xóa bài đăng thành công",
+      });
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
 
 
 
@@ -1496,21 +1588,15 @@ router.delete("/blogs/:id", jwtAuth, (req, res) => {
 /////////////////////////////////////Comment////////////////////////////////////////////
 //add
 router.post("/binhluans", (req, res) => {
-  const user = req.user;
-  const blog = req.blog;
+  
 
   const data = req.body;
 
   let binhluan = new Comment({
-    userId: user._id,
-    blogId: blog._id,
+    userId: data.userId,
+    blogId: data.blogId,
     commentcontent: data.commentcontent,
-    dateOfPosting: data.dateOfPosting,
   });
-
-  // console.log(user._id)
-  // console.log("ƯADQWFWAEFAWECWAEC")
-  // console.log(blog._id)
 
   binhluan
     .save()
@@ -1518,9 +1604,36 @@ router.post("/binhluans", (req, res) => {
       res.json({ message: "Thêm bình luận thành công" });
     })
     .catch((err) => {
-      res.status(400).json({ message: "Vui lòng nhập nội dung bình luận" });
+      res.status(400).json(err);
     });
 });
+
+
+router.get('/getbinhluan/:idbaidang', (req, res) => {
+  
+  try {
+    Comment.find({blogId: req.params.idbaidang}).then((data)=>{
+    res.json(data);
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+router.delete('/deletebinhluan/:iddelete', (req, res) => {
+  
+  try {
+    Comment.find({_id: req.params.iddelete}).remove().exec()
+    res.json("success");
+  } catch (error) {
+    console.log(error)
+  }
+
+})
+
+
+
+
 
 
 router.get("/binhluans", jwtAuth, (req, res) => {
@@ -1713,10 +1826,10 @@ router.delete("/binhluans/:id", jwtAuth, (req, res) => {
 
 
 
-
+//////////Đổ dữ liệu từ API vào bảng
 router.get('/RecruiterInfo', (req, res) => {
   try {
-    Recruiter.find({}).then((data)=>{
+    User.find({}).then((data)=>{
     res.json(data);
     })
   } catch (error) {
@@ -1729,11 +1842,11 @@ router.get('/RecruiterInfo', (req, res) => {
   console.log(idUser)
   try {
     let status = true;
-    await Recruiter.find({userId: idUser}).then((data)=>{
+    await User.find({_id: idUser}).then((data)=>{
       status = !data[0].status
     })
     console.log(status)
-    await Recruiter.updateOne({userId: idUser}, {
+    await User.updateOne({_id: idUser}, {
       status :status
     })
     res.status(200).json(status)
@@ -1741,12 +1854,6 @@ router.get('/RecruiterInfo', (req, res) => {
     console.log(error)
   }
 })
-
-
-
-
-
-
 
 
 

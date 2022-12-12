@@ -382,7 +382,7 @@ const Login = (props) => {
             }}
           >
             <MenuItem value="applicant">Sinh viên</MenuItem>
-            <MenuItem value="recruiter">Cựu sinh viên/Giáo viên</MenuItem>
+            <MenuItem value="recruiter">Cựu sinh viên</MenuItem>
           </TextField>
         </Grid>
         <Grid item>
@@ -395,7 +395,7 @@ const Login = (props) => {
             helperText={inputErrorHandler.name.message}
             onBlur={(event) => {
               if (event.target.value === "") {
-                handleInputError("name", true, "Name is required");
+                handleInputError("name", true, "Vui lòng nhập Họ và Tên");
               } else {
                 handleInputError("name", false, "");
               }
@@ -424,7 +424,7 @@ const Login = (props) => {
             helperText={inputErrorHandler.password.message}
             onBlur={(event) => {
               if (event.target.value === "") {
-                handleInputError("password", true, "Password is required");
+                handleInputError("password", true, "Vui lòng nhập vào mật khẩu");
               } else {
                 handleInputError("password", false, "");
               }
@@ -473,7 +473,7 @@ const Login = (props) => {
           <>
             <Grid item>
                 <TextField
-                  label="Mã số cán bộ/ mã số sinh viên của cựu sinh viên"
+                  label="Mã số sinh viên của cựu sinh viên"
                   value={signupDetails.code}
                   onChange={(event) => handleInput("code", event.target.value)}
                   className={classes.inputBox}
@@ -481,7 +481,7 @@ const Login = (props) => {
                   helperText={inputErrorHandler.code.message}
                   onBlur={(event) => {
                     if (event.target.value === "") {
-                      handleInputError("code", true, "Vui lòng nhập mã số sinh viên/cán bộ!");
+                      handleInputError("code", true, "Vui lòng nhập mã số sinh viên!");
                     } else {
                       handleInputError("code", false, "");
                     }

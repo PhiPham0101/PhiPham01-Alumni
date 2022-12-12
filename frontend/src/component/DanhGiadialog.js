@@ -30,7 +30,7 @@ function DanhGiadialog(props) {
     idblog: props.idblog,
     iduser: props.iduser,
     commentcontent: "",
-
+    dateOfPosting : new Date()
   });
 
   const handleInput = (key, value) => {
@@ -45,18 +45,17 @@ function DanhGiadialog(props) {
 
   const params = useParams()
   const handleDanhgia = () => {
-
-    // const binhluan = {
-    //   userId: user._id,
-    //   blogId: blog._id,
-    //   commentcontent: commentcontent,
-    //   //dateOfPosting: dateOfPosting,
-    // };
+    const iduser = localStorage.getItem("iduser")
+     const binhluan = {
+      userId : iduser,
+       blogId: props.idblog,
+       commentcontent: binhluansDetails.commentcontent,
+     };
   
-
+     console.log(binhluan)
 
     axios
-      .post(apiList.binhluans, binhluansDetails, {
+      .post(apiList.binhluans, binhluan, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -65,19 +64,17 @@ function DanhGiadialog(props) {
         setBinhluansDetails({
           // ...binhluans
           commentcontent: "",
+        
         });
+        props.reloadAPI()
         console.log(res.data)
+        props.handleClose()
 
       })
       .catch((err) => {
         console.log(err)
       });
     
-    console.log(binhluansDetails);
-    console.log("1234567890");
-
-      
-
     // axios
     //   .get("http://localhost:4444/api/binhluans/",{binhluan})
     //   .then((res) => {

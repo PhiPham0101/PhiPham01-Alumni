@@ -27,7 +27,6 @@ function CapNhat(props) {
             [key]: value,
         });
     };
-    console.log(blogs);
     // const handleCloseUpdate = () => {
     //     setOpenUpdate(false);
     //   };

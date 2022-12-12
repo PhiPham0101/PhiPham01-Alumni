@@ -43,7 +43,7 @@ const Admin = (props) => {
     try {
       const result = await axios.post(apiList.blockUser, { idUser })
       const newList = list.map((item)=>{
-        return item.userId === idUser ? {...item, status: !item.status} : {...item} 
+        return item._id === idUser ? {...item, status: !item.status} : {...item} 
       })
       setList(newList)
       setIsBlock(result.data)
@@ -66,7 +66,7 @@ const Admin = (props) => {
       })
       .then((response) => {
         for (var item of response.data) {
-          console.log(item.userId);
+          console.log(item._id);
         }
         setList(response.data);
       })
@@ -87,21 +87,19 @@ const Admin = (props) => {
 
 
   return (
-    <Box width={'100%'} height={'100%'} border={'1px solid black'} display={'flex'} flexDirection={'column'}
+    <Box width={'100%'} height={'100%'}  display={'flex'} flexDirection={'column'}
       justifyContent={'center'} alignItems={'center'}
     >
 
-      <Typography variant="h5">Danh sách cựu sinh viên</Typography>
+      <Typography variant="h3">Danh sách cựu sinh viên</Typography>
       <Box width={'70%'} height={'100%'}>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
-                <StyledTableCell>Họ và Tên</StyledTableCell>
-                <StyledTableCell align="right">Khóa</StyledTableCell>
-                <StyledTableCell align="right">số điện thoại</StyledTableCell>
-                <StyledTableCell align="right">quyền</StyledTableCell>
-                <StyledTableCell align="right">trạng thái</StyledTableCell>
+                <StyledTableCell>Email</StyledTableCell>
+                <StyledTableCell align="right">Quyền tài khoản</StyledTableCell>
+                <StyledTableCell align="right">Trạng thái</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -109,14 +107,12 @@ const Admin = (props) => {
                 list.map((row, index) => (
                   <StyledTableRow key={index}>
                     <StyledTableCell component="th" scope="row">
-                      {row.name}
+                      {row.email}
                     </StyledTableCell>
-                    <StyledTableCell align="right">{row.course}</StyledTableCell>
-                    <StyledTableCell align="right">{row.contactNumber}</StyledTableCell>
                     <StyledTableCell align="right">{row.is_admin == true ? "admin" : "alumni"}</StyledTableCell>
                     <StyledTableCell align="right">
                       <Button style={{ backgroundColor: "#f97474", marginRight: "5px" }} variant="contained"
-                        onClick={() => handelBolck(row.userId)}
+                        onClick={() => handelBolck(row._id)}
                       >{row.status == true ? 'Khóa' : 'Mở'}</Button>
                     </StyledTableCell>
                   </StyledTableRow>

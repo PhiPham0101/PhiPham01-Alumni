@@ -20,6 +20,7 @@ import CapNhat from './CapNhat'
 import Xoa from './Xoa'
 
 import { userType } from "../lib/isAuth";
+import BinhLuan from "./BinhLuan";
 
 function ViewBlog(props) {
 
@@ -62,7 +63,6 @@ function ViewBlog(props) {
           console.log(err)
         })
     }, [params.id])
-  console.log(blogs)
 
   const [opendanhgia, setOpendanhgia] = useState(false)
   const [opencapnhat, setOpencapnhat] = useState(false)
@@ -108,28 +108,38 @@ function ViewBlog(props) {
 
 
   const [binhluans, setBinhluans] = useState();
+  const [listbinhluan,setListbinhluan] = useState()
   const handleInput = (key, value) => {
     setBinhluans({
       ...binhluans,
       [key]: value,
     });
   };
-  var pathbinhluans =
+
+
+  const getbinhluan = () => {
+    axios.get(`http://localhost:4444/api/getbinhluan/${params.id}`)
+    .then(res=>{
+      setListbinhluan(res.data)
+    }).catch(err=>{
+      console.log(err)
+    })
+  }
+
+
+
     useEffect(() => {
       axios.get(`http://localhost:4444/api/binhluans/${params.id}`)
         .then(res => {
           setBinhluans(res.data)
-
         })
         .catch(err => {
           console.log(err)
         })
+        getbinhluan()
     }, [params.id])
 
-  console.log(binhluans);
-  console.log(blogs)
-  console.log("aaqeqw9999");
-
+console.log(listbinhluan)
 
   return (
     <Box width={'90%'} display={'flex'} alignItems={'center'} justifyContent={'center'} padding={5} >
@@ -161,25 +171,27 @@ function ViewBlog(props) {
           </Box>
           <Box marginTop={3} width={'100%'} display={'flex'} alignItems={'center'} flexDirection={'column'}>
             <Box style={{ color: "#444444	" }} alignItems={'left'}><h2>Bình luận</h2></Box>
-            <Box width={'80%'} marginTop={2} display={'flex'} flexDirection={'column'} border={'1px solid black'} />
-            <Box width={'80%'} marginTop={2} display={'flex'} flexDirection={'column'} border={'1px solid black'}>
-               <Typography>
-                  {binhluans && binhluans.userId}
-              </Typography>
-              <Typography>
-                 {binhluans && binhluans._id}
-              </Typography>
-              <Typography>
-                 {binhluans && binhluans.dateOfPosting}
-              </Typography>
-              <Typography>
-                  {binhluans && binhluans.commentcontent}
-              </Typography>
+            <Box width={'80%'} marginTop={2} display={'flex'} flexDirection={'column'} />
+            <Box width={'80%'} marginTop={2} display={'flex'} flexDirection={'column'} >
+               
+               {listbinhluan && listbinhluan.map((ele,index)=>{
+                  return(
+
+                    <BinhLuan
+                      iduser = {ele.userId}
+                      comment = {ele.commentcontent}
+                      date = {ele.dateOfPosting}
+                      id={ele._id}
+                      reloadAPI= {getbinhluan}
+                    />
+                   
+                  )
+               })}
+              
+   
             
             </Box>
-            {/* <Box width={'80%'} marginTop={2} height={'50px'} border={'1px solid black'}>
-
-            </Box> */}
+            {/* >  */}
           </Box>
         </Box>
 
@@ -187,11 +199,12 @@ function ViewBlog(props) {
       </Box>
 
       <DanhGiadialog
-        open={opendanhgia}
-        handleClose={handleClose}
-        idblog= {blogs && blogs._id}
-        iduser = {blogs && blogs.userId}
-        // valueSubmit = {idblog}
+      open={opendanhgia}
+      handleClose={handleClose}
+      idblog= {blogs && blogs._id}
+      iduser = {blogs && blogs.userId}
+      // valueSubmit = {idblog}
+      reloadAPI= {getbinhluan}
       />
 
       <CapNhat
@@ -199,6 +212,7 @@ function ViewBlog(props) {
         handleClose={handleCloseCapnhat}
         blogs={blogs}
         reloadAPI={reloadAPI}
+
       />
 
       <Xoa

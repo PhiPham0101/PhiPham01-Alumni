@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -9,6 +9,7 @@ import {
 import { useHistory } from "react-router-dom";
 
 import isAuth, { userType } from "../lib/isAuth";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,6 +32,19 @@ const Navbar = (props) => {
     history.push(location);
   };
 
+  // const [user,setUser] = useState()
+  // const id = localStorage.getItem('iduser');
+  // useEffect(()=>{
+    
+  //   axios.get(`http://localhost:4444/api/userroute/${id}`)
+  //   .then(res=>{
+  //     setUser(res.data)
+  //   }).catch(err=>{
+  //     console.log(err)
+  //   })
+  // },[])
+
+  // console.log(user)
   return (
     <AppBar position="fixed">
       <Toolbar>
@@ -43,7 +57,12 @@ const Navbar = (props) => {
         </Typography>
         {isAuth() ? (
           userType() === "recruiter" ? (
-            <>
+            <> 
+               {/* {user && user.is_admin !== undefined && user.is_admin === true  ? 
+                <Button color="inherit" onClick={() => handleClick("/admin")}>
+                    Quản lý tài khoản
+              </Button>
+               : ""} */}
               <Button color="inherit" onClick={() => handleClick("/home")}>
                 Trang chủ
               </Button>

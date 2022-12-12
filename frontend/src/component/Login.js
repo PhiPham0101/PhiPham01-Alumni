@@ -9,7 +9,7 @@ import {
   Paper,
 } from "@material-ui/core";
 import axios from "axios";
-import { Redirect, useNavigate } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 
 
 import PasswordInput from "../lib/PasswordInput";
@@ -19,6 +19,7 @@ import { SetPopupContext } from "../App";
 import apiList from "../lib/apiList";
 import isAuth from "../lib/isAuth";
 import userIsAdmin from "../lib/isAuth";
+
 
 
 
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = (props) => {
-  
+  let history = useHistory ()
   const classes = useStyles();
   const setPopup = useContext(SetPopupContext);
 
@@ -76,7 +77,6 @@ const Login = (props) => {
   };
 
   const handleLogin = () => {
-    //const navigate = useNavigate()
     const verified = !Object.keys(inputErrorHandler).some((obj) => {
       return inputErrorHandler[obj].error;
     });
@@ -84,24 +84,33 @@ const Login = (props) => {
       axios
         .post(apiList.login, loginDetails)
         .then((response) => {
+          console.log(response.data)
+
+        if (response.data.status == false){
+          alert('Tài khoản của bạn đã bị khóa')
+
+        }else{
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
-          // localStorage.setItem("fff", response.data.is_admin);
-          // localStorage.setItem("aaaa", response.data.status);
+          localStorage.setItem("fff", response.data.is_admin);
+          localStorage.setItem("aaaa", response.data.status);
+          localStorage.setItem("iduser", response.data.iduser);
+          console.log(response.data)
           setLoggedin(isAuth());
-          console.log(response.data.is_admin);
-          // if (response.data.is_admin == true){
-          //   navigate("/")
-          // };
-          // if (response.data.status == false){
-          //   console.log("Tài khoản của bạn đã bị khóa")
-          // };
-          console.log(admin);
+          if (response.data.is_admin === true){
+            console.log(response.data.is_admin)
+            history.push('/admin')
+           
+          };
+          
           setPopup({
             open: true,
             severity: "success",
             message: "Đăng nhập thành công.",
           });
+        }
+
+          
         })
         .catch((err) => {
           setPopup({
@@ -121,7 +130,6 @@ const Login = (props) => {
   };
 
   return loggedin ? (
-    admin ? <Redirect to="/admin" />: 
     <Redirect to="/" />
   ) : (
     <Paper elevation={3} className={classes.body}>
